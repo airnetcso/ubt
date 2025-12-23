@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>CBT Exam</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2 class="title">Latihan Bahasa Korea</h2>
+
+<div class="exam-container">
+  <div class="panel">
+    <h3>Listening (1–20)</h3>
+    <div id="listening" class="grid"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Reading (21–40)</h3>
+    <div id="reading" class="grid"></div>
+  </div>
+</div>
+
+<div class="question-panel">
+  <h3 id="questionNumber">Pilih soal</h3>
+  <img id="questionImage" style="display:none;" />
+  <p id="questionText"></p>
+
+  <div id="audioArea" style="display:none;">
+    <audio id="audioPlayer" controls></audio>
+  </div>
+
+  <div id="options"></div>
+</div>
+
+<!-- TIMER & CONTROLS -->
+<div class="exam-controls">
+  <div id="timer">Waktu tersisa: 50:00</div>
+  <button id="submitBtn">Submit</button>
+  <button id="restartBtn">Ulang</button>
+  <button id="reviewBtn">Review</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

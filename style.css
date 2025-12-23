@@ -1,0 +1,46 @@
+* { box-sizing: border-box; font-family: Arial, sans-serif; }
+body { margin:0; background:#f2f2f2; }
+
+/* LOGIN */
+.login-page { height:100vh; display:flex; justify-content:center; align-items:center; }
+.login-box { background:#fff; padding:20px; width:260px; border-radius:8px; text-align:center; }
+.login-box input { width:100%; padding:8px; margin-bottom:10px; }
+
+/* EXAM */
+.title { text-align:center; margin:10px 0; }
+.exam-container { display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:16px; }
+.panel { background:#fff; padding:12px; border-radius:8px; }
+.grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+
+/* WARNA KOTAK SOAL */
+:root {
+  --listening: #1e3a5f;
+  --reading: #1f5f3a;
+  --opened: #bdbdbd;
+  --active: #2196f3;
+}
+
+.q-box {
+  height:48px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+  font-weight:bold; cursor:pointer; color:white; transition:all 0.2s ease;
+}
+
+.listening-box { background: var(--listening); }
+.reading-box { background: var(--reading); }
+.q-box.opened { background: var(--opened); color:#333; }
+.q-box.active { background: var(--active) !important; color:white; transform:scale(1.05); }
+
+/* PANEL SOAL */
+.question-panel { background:white; margin:0 16px 16px; padding:16px; border-radius:8px; }
+#questionImage { max-width:100%; margin:10px 0; border-radius:8px; }
+.option { background:#eee; padding:10px; margin-top:8px; border-radius:6px; cursor:pointer; }
+.option.selected { background:#4caf50; color:white; }
+
+/* CONTROLS */
+.exam-controls { margin:16px; display:flex; gap:10px; align-items:center; }
+.exam-controls button { padding:8px 14px; border:none; border-radius:6px; cursor:pointer; background:#2196f3; color:white; font-weight:bold; transition:0.2s; }
+.exam-controls button:hover { background:#1976d2; }
+#timer { font-weight:bold; font-size:1.1em; }
+
+/* MOBILE */
+@media (max-width:768px) { .exam-container { grid-template-columns:1fr; } }

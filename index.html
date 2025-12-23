@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login CBT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+
+<div class="login-box">
+  <h2>Login CBT</h2>
+  <input id="name" placeholder="Nama">
+  <button onclick="login()">Masuk</button>
+</div>
+
+<script>
+function login() {
+  const name = document.getElementById('name').value;
+  if (!name) return alert('Isi nama');
+  localStorage.setItem('user', name);
+  location.href = 'exam.html';
+}
+</script>
+
+</body>
+</html>
