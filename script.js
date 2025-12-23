@@ -25,7 +25,7 @@ for (let i=21;i<=40;i++){
 
 // ===== VARIABEL =====
 let activeBox = null;
-const answers = {}; // jawaban user
+const answers = {};
 const scorePerQuestion = 2.5;
 
 // ===== RENDER KOTAK =====
@@ -47,7 +47,7 @@ soal.forEach(q=>{
   (q.id<=20?listening:reading).appendChild(box);
 });
 
-// ===== TAMPILKAN SOAL =====
+// ===== SHOW QUESTION =====
 function showQuestion(q){
   questionNumber.textContent="Soal "+q.id;
   questionText.textContent=q.question;
@@ -98,7 +98,7 @@ function submitExam(){
   clearInterval(timerInterval);
   let score=0;
   soal.forEach(q=>{
-    const correct=q.options[0]; // default jawaban benar = opsi pertama
+    const correct=q.options[0];
     if(answers[q.id] && answers[q.id]===correct) score+=scorePerQuestion;
   });
   alert(`Ujian selesai!\nNilai: ${score}`);

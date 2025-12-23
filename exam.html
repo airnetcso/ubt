@@ -9,36 +9,38 @@
 
 <h2 class="title">Latihan Bahasa Korea</h2>
 
-<div class="exam-container">
-  <div class="panel">
+<div class="exam-container-3col">
+  <!-- Kolom 1: Listening -->
+  <div class="panel panel-grid">
     <h3>Listening (1–20)</h3>
-    <div id="listening" class="grid"></div>
+    <div id="listening" class="grid-4x5"></div>
   </div>
 
-  <div class="panel">
+  <!-- Kolom 2: Reading -->
+  <div class="panel panel-grid">
     <h3>Reading (21–40)</h3>
-    <div id="reading" class="grid"></div>
-  </div>
-</div>
-
-<div class="question-panel">
-  <h3 id="questionNumber">Pilih soal</h3>
-  <img id="questionImage" style="display:none;" />
-  <p id="questionText"></p>
-
-  <div id="audioArea" style="display:none;">
-    <audio id="audioPlayer" controls></audio>
+    <div id="reading" class="grid-4x5"></div>
   </div>
 
-  <div id="options"></div>
-</div>
+  <!-- Kolom 3: Soal -->
+  <div class="panel question-panel">
+    <h3 id="questionNumber">Pilih soal</h3>
+    <img id="questionImage" style="display:none;" />
+    <p id="questionText"></p>
 
-<!-- TIMER & CONTROLS -->
-<div class="exam-controls">
-  <div id="timer">Waktu tersisa: 50:00</div>
-  <button id="submitBtn">Submit</button>
-  <button id="restartBtn">Ulang</button>
-  <button id="reviewBtn">Review</button>
+    <div id="audioArea" style="display:none;">
+      <audio id="audioPlayer" controls></audio>
+    </div>
+
+    <div id="options"></div>
+
+    <div class="exam-controls">
+      <div id="timer">Waktu tersisa: 50:00</div>
+      <button id="submitBtn">Submit</button>
+      <button id="restartBtn">Ulang</button>
+      <button id="reviewBtn">Review</button>
+    </div>
+  </div>
 </div>
 
 <script src="script.js"></script>
