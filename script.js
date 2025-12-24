@@ -561,10 +561,10 @@ const questions = [
 
 ];
 
-// ================================
-// LOGIC CBT
-// ================================
 
+// =====================
+// CBT LOGIC
+// =====================
 let current = null;
 let answers = {};
 
@@ -575,37 +575,51 @@ const optionsDiv = document.getElementById("options");
 const audioArea = document.getElementById("audioArea");
 const audioPlayer = document.getElementById("audioPlayer");
 
-// Generate nomor soal
+// BUAT KOTAK SOAL
 function generateBoxes() {
   questions.forEach(q => {
     const box = document.createElement("div");
     box.className = `q-box ${q.type}`;
     box.textContent = q.id;
+    box.dataset.id = q.id;
+
     box.onclick = () => loadQuestion(q.id);
+
     document.getElementById(q.type).appendChild(box);
   });
 }
 
-// Load soal
+// LOAD SOAL
 function loadQuestion(id) {
-  const q = questions.find(x => x.id === id);
-  current = q;
+  current = questions.find(q => q.id === id);
 
-  qNumber.textContent = `Soal ${q.id}`;
-  qText.innerHTML = q.question;
+  // reset active
+  document.querySelectorAll(".q-box")
+    .forEach(b => b.classList.remove("active"));
+
+  // tandai opened + active
+  const box = document.querySelector(`.q-box[data-id="${id}"]`);
+  if(box){
+    box.classList.add("opened");
+    box.classList.add("active");
+  }
+
+  qNumber.textContent = `Soal ${current.id}`;
+  qText.innerHTML = current.question;
 
   // image
-  if (q.image) {
-    qImg.src = q.image;
+  if(current.image){
+    qImg.src = current.image;
     qImg.style.display = "block";
   } else {
     qImg.style.display = "none";
   }
 
   // audio
-  if (q.type === "listening") {
+  if(current.type === "listening"){
     audioArea.style.display = "block";
-    audioPlayer.src = q.audio;
+    audioPlayer.src = current.audio;
+    audioPlayer.play().catch(()=>{});
   } else {
     audioArea.style.display = "none";
     audioPlayer.pause();
@@ -613,27 +627,47 @@ function loadQuestion(id) {
 
   // options
   optionsDiv.innerHTML = "";
-  Object.keys(q.options).forEach(key => {
+  Object.keys(current.options).forEach(key => {
     const div = document.createElement("div");
     div.className = "option";
-    div.textContent = `${key}. ${q.options[key]}`;
-    if (answers[q.id] === key) div.classList.add("selected");
+    div.textContent = `${key}. ${current.options[key]}`;
+
+    if(answers[current.id] === key)
+      div.classList.add("selected");
+
     div.onclick = () => {
-      answers[q.id] = key;
-      loadQuestion(q.id);
+      answers[current.id] = key;
+      loadQuestion(current.id);
     };
+
     optionsDiv.appendChild(div);
   });
 }
 
-// Submit
-function submitExam() {
-  let score = 0;
-  questions.forEach(q => {
-    if (answers[q.id] === q.answer) score++;
+// SUBMIT + SIMPAN NILAI
+function submitExam(){
+  let correct = 0;
+  questions.forEach(q=>{
+    if(answers[q.id] === q.answer) correct++;
   });
-  alert(`Nilai Anda: ${score * 2.5}`);
+
+  const score = correct * 2.5;
+  const user = localStorage.getItem("cbt_user");
+
+  let history = JSON.parse(localStorage.getItem("cbt_results")) || [];
+  history.push({
+    user,
+    score,
+    correct,
+    total: questions.length,
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("cbt_results", JSON.stringify(history));
+  localStorage.removeItem("cbt_login");
+
+  alert(`Peserta: ${user}\nNilai: ${score}`);
 }
 
-// Init
+// INIT
 generateBoxes();

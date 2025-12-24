@@ -7,6 +7,13 @@
 </head>
 <body>
 
+<script>
+if(localStorage.getItem("cbt_login") !== "true"){
+  alert("Silakan login terlebih dahulu");
+  location.href = "index.html";
+}
+</script>
+
 <h2 class="title">Latihan Bahasa Korea</h2>
 
 <div class="exam-container-3col">
@@ -24,9 +31,9 @@
   <div class="panel question-panel">
     <h3 id="questionNumber">Pilih soal</h3>
 
-    <img id="questionImage" style="display:none;">
-    
-    <div id="audioArea" style="display:none;">
+    <img id="questionImage" style="display:none">
+
+    <div id="audioArea" style="display:none">
       <audio id="audioPlayer" controls></audio>
     </div>
 
