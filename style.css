@@ -1,62 +1,52 @@
-* { box-sizing: border-box; font-family: Arial, sans-serif; }
-body { margin:0; background:#f2f2f2; }
+*{box-sizing:border-box;font-family:Arial}
+body{margin:0;background:#f2f2f2}
 
 /* LOGIN */
-.login-page { height:100vh; display:flex; justify-content:center; align-items:center; }
-.login-box { background:#fff; padding:20px; width:260px; border-radius:8px; text-align:center; }
-.login-box input { width:100%; padding:8px; margin-bottom:10px; }
+.login-page{height:100vh;display:flex;justify-content:center;align-items:center}
+.login-box{background:#fff;padding:20px;width:260px;border-radius:8px;text-align:center}
 
-.exam-container-3col {
-  display: grid;
-  grid-template-columns: 30% 30% 40%; /* skala kolom sesuai permintaan */
-  gap: 16px;
-  padding: 16px;
+/* EXAM */
+.title{text-align:center;margin:10px}
+.exam-container-3col{
+  display:grid;
+  grid-template-columns:200px 200px 1fr;
+  gap:15px;
+  padding:15px;
+}
+.panel{background:#fff;padding:10px;border-radius:8px}
+
+.grid-4x5{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
 }
 
-/* Kotak 4x5 seragam di tiap kolom */
-.grid-4x5 {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 4 kotak horizontal, sama lebar */
-  grid-template-rows: repeat(4, 48px);   /* 5 kotak vertikal, sama tinggi */
-  gap: 8px;
+.q-box{
+  height:45px;
+  border-radius:6px;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:bold;
+  cursor:pointer;
 }
+.listening{background:#1e3a5f}
+.reading{background:#1f5f3a}
+.active{outline:3px solid #2196f3}
 
-.panel { background:#fff; padding:12px; border-radius:8px; }
-.grid-4x5 { display:grid; grid-template-columns:repeat(5,1fr); grid-template-rows:repeat(4,48px); gap:8px; }
-
-/* WARNA KOTAK SOAL */
-:root {
-  --listening: #1e3a5f;
-  --reading: #1f5f3a;
-  --opened: #bdbdbd;
-  --active: #2196f3;
+.question-panel img{max-width:100%;border-radius:8px;margin:10px 0}
+.option{
+  background:#eee;
+  padding:10px;
+  margin-top:6px;
+  border-radius:6px;
+  cursor:pointer;
 }
+.option.selected{background:#4caf50;color:#fff}
 
-.q-box { height:48px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-weight:bold; cursor:pointer; color:white; transition:all 0.2s ease; }
-.listening-box { background: var(--listening); }
-.reading-box { background: var(--reading); }
-.q-box.opened { background: var(--opened); color:#333; }
-.q-box.active { background: var(--active) !important; color:white; transform:scale(1.05); }
+.exam-controls{margin-top:15px;display:flex;gap:10px;align-items:center}
 
-/* PANEL SOAL */
-.question-panel { background:white; padding:16px; border-radius:8px; }
-#questionImage { max-width:100%; margin:10px 0; border-radius:8px; }
-.option { background:#eee; padding:10px; margin-top:8px; border-radius:6px; cursor:pointer; }
-.option.selected { background:#4caf50; color:white; }
-
-/* CONTROLS */
-.exam-controls { margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-.exam-controls button { padding:8px 14px; border:none; border-radius:6px; cursor:pointer; background:#2196f3; color:white; font-weight:bold; transition:0.2s; }
-.exam-controls button:hover { background:#1976d2; }
-#timer { font-weight:bold; font-size:1.1em; }
-
-/* MOBILE RESPONSIVE */
-@media (max-width:768px) {
-  .exam-container-3col { grid-template-columns: 1fr; }
-  .grid-4x5 { grid-template-columns: repeat(4,1fr); }
+@media(max-width:768px){
+  .exam-container-3col{grid-template-columns:1fr}
 }
-
-
-
-
-
