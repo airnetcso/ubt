@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ujian Bahasa Korea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 320px;
+            text-align: center;
+        }
+        h2 { color: #333; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 20px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background: #c0392b; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>UJIAN BAHASA KOREA</h2>
+        <p>Masukkan nama untuk memulai</p>
+        <input type="text" id="username" placeholder="Nama Siswa" required>
+        <button onclick="login()">Mulai Ujian</button>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            if (username === '') {
+                alert('Masukkan nama dulu bro!');
+                return;
+            }
+            localStorage.setItem('studentName', username);
+            localStorage.setItem('isLoggedIn', 'true');
+            window.location.href = 'exam.html';
+        }
+    </script>
+</body>
+</html>
