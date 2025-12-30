@@ -5,7 +5,7 @@ let questions = [],
 /* ================= LOAD SOAL ================= */
 async function loadSoal(){
   try{
-    const res = await fetch("https://raw.githubusercontent.com/airnetcso/ubt/refs/heads/main/soal.json");
+    const res = await fetch("https://raw.githubusercontent.com/airnetcso/ubt/main/soal.json");
     if(!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     questions = await res.json();
     buildGrid();
