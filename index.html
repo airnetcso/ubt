@@ -2,103 +2,61 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Login CBT</title>
-
+<title>UBT - Mulai Ujian</title>
 <style>
-*{
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
-}
-
 body{
-  margin:0;
+  font-family:Arial;
+  background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg.jpg") center/cover;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:
-    linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)),
-    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg.jpg") center/cover no-repeat;
+  margin:0;
+  color:white;
 }
-
-/* BOX LOGIN */
-.login-box{
-  width:320px;
-  background:rgba(255,255,255,0.3); /* 0.5 = 50% transparan */
-  padding:30px 25px;
+.container{
   text-align:center;
-  backdrop-filter: blur(5px); /* opsional, biar blur background terlihat lebih keren */
+  background:rgba(255,255,255,0.2);
+  padding:40px;
+  border-radius:15px;
+  backdrop-filter:blur(10px);
 }
-
-
-.login-box h2{
-  margin-bottom:25px;
-}
-
-/* INPUT */
-.login-box input{
-  width:100%;
+input{
   padding:12px;
-  margin-bottom:15px;
-  border:1px solid #ccc;
-  outline:none;
-  font-size:14px;
-}
-
-/* BUTTON */
-.login-box button{
-  width:100%;
-  padding:12px;
-  background:#2563eb;
-  color:#fff;
+  width:250px;
+  margin:20px 0;
+  font-size:16px;
   border:none;
-  font-size:15px;
+  border-radius:8px;
+}
+button{
+  padding:15px 30px;
+  font-size:18px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:8px;
   cursor:pointer;
 }
-
-.login-box button:hover{
-  background:#1e40af;
-}
+button:hover{background:#1e40af;}
 </style>
 </head>
-
 <body>
-
-<div class="login-box">
-  <h2>LOGIN UBT</h2>
-  <input id="username" placeholder="Username / 이름">
-  <input id="password" type="password" placeholder="Password / 비밀번호">
-  <button onclick="login()">LOGIN / 로그인</button>
+<div class="container">
+  <h1>UJIAN BAHASA TINGKAT (UBT)</h1>
+  <p>Masukkan nama kamu (atau biarin kosong)</p>
+  <input type="text" id="nama" placeholder="Nama Siswa (opsional)">
+  <br>
+  <button onclick="mulai()">MULAI UJIAN</button>
 </div>
-
 <script>
-const users=[
-  {username:"siswa01",password:"12345",role:"user"},
-  {username:"siswa02",password:"12345",role:"user"},
-  {username:"siswa03",password:"12345",role:"user"},
-  {username:"admin",password:"admin123",role:"admin"}
-];
-
-function login(){
-  const u=username.value.trim();
-  const p=password.value.trim();
-  const user=users.find(x=>x.username===u && x.password===p);
-
-  if(!user){
-    alert("Username atau password salah");
-    return;
-  }
-
- // Hanya reset login & user, jangan hapus 'results'
-localStorage.setItem("login","true");
-localStorage.setItem("user",u);
-localStorage.setItem("role",user.role);
-
-  location.href = user.role==="admin"
-    ? "admin.html"
-    : "dashboard.html";
+function mulai(){
+  const nama = document.getElementById("nama").value.trim() || "Siswa";
+  localStorage.setItem("login","true");
+  localStorage.setItem("user",nama);
+  localStorage.setItem("role","user");
+  location.href = "dashboard.html";
 }
 </script>
-
 </body>
 </html>
