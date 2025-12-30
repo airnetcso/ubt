@@ -5,7 +5,7 @@ let questions = [],
 /* ================= LOAD SOAL ================= */
 async function loadSoal(){
   try{
-    const res = await fetch("https://raw.githubusercontent.com/airnetcso/eps/refs/heads/main/soal.json");
+    const res = await fetch("https://raw.githubusercontent.com/airnetcso/ubt/refs/heads/main/soal.json");
     questions = await res.json();
 
     // aman dipanggil di halaman mana pun
