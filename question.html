@@ -1,124 +1,27 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soal Ujian Korea</title>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8f9fa; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
-        .top-bar { background: white; padding: 15px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; font-size: 22px; font-weight: bold; color: #2c3e50; }
-        .content { flex: 1; display: flex; max-width: 1200px; margin: 20px auto; padding: 0 20px; gap: 30px; box-sizing: border-box; }
-        .options-column { flex: 3; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .question-column { flex: 7; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
-        .question-text { font-size: 1.6em; line-height: 1.8; text-align: left; }
-        .options label { display: block; padding: 20px; margin: 15px 0; background: #ecf0f1; border-radius: 10px; cursor: pointer; font-size: 18px; transition: all 0.3s; border: 2px solid transparent; }
-        .options label:hover { background: #d5dbdb; transform: translateX(5px); }
-        .options input[type="radio"]:checked + span { font-weight: bold; }
-        .options span { margin-left: 10px; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-        .nav-btn { padding: 14px 30px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; min-width: 130px; }
-        .prev-btn { background: #3498db; color: white; }
-        .back-btn { background: #e91e63; color: white; }
-        .next-btn { background: #2ecc71; color: white; }
-        .nav-btn:disabled { background: #bdc3c7; cursor: not-allowed; }
-    </style>
+<meta charset="UTF-8">
+<title>Soal</title>
+<link rel="stylesheet" href="style.css">
 </head>
+<script>
+if(localStorage.getItem("login")!=="true"){location.href="index.html";}
+</script>
 <body>
-    <div class="top-bar" id="questionTitle">Soal ...</div>
-    <div class="content">
-        <div class="options-column">
-            <div class="options" id="options"></div>
-        </div>
-        <div class="question-column">
-            <div class="question-text" id="questionText">Memuat soal...</div>
-        </div>
-    </div>
+<div class="question-page">
+  <div class="col-left" id="answers"></div>
+  <div class="col-right" id="questionBox"></div>
+</div>
 
-    <div class="bottom-nav">
-        <button class="nav-btn prev-btn" id="prevBtn" onclick="goPrev()">◄ Sebelumnya</button>
-        <button class="nav-btn back-btn" onclick="goBack()">Kembali ke Navigasi</button>
-        <button class="nav-btn next-btn" id="nextBtn" onclick="goNext()">Berikutnya ►</button>
-    </div>
+<div class="nav-buttons">
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        let currentQ = parseInt(urlParams.get('q')) || 0;
-        let answers = JSON.parse(localStorage.getItem('answers')) || new Array(40).fill(null);
+  <button onclick="prevQuestion()">SOAL SEBELUMNYA</button>
+  <button onclick="back()">KEMBALI</button>
+  <button onclick="nextQuestion()">SOAL BERIKUTNYA</button>
+ 
+</div>
 
-        const questions = [
-            // Listening 1-20
-            { question: "Dengarkan percakapan. Apa yang dipesan oleh pelanggan di restoran?", options: ["Bibimbap", "Kimchi jjigae", "Bulgogi", "Samgyeopsal"], answer: 0 },
-            { question: "Dengarkan dan pilih ucapan selamat tinggal yang benar.", options: ["안녕하세요", "감사합니다", "안녕히 가세요", "좋은 하루 되세요"], answer: 2 },
-            { question: "Apa arti dari percakapan di stasiun kereta?", options: ["Mau ke Busan", "Mau ke Jeju", "Mau ke Seoul", "Mau ke Incheon"], answer: 2 },
-            { question: "Dengarkan pengumuman. Kereta berangkat pukul berapa?", options: ["10:30", "11:00", "11:30", "12:00"], answer: 1 },
-            { question: "Di mana tempat yang dibicarakan dalam dialog?", options: ["Rumah sakit", "Sekolah", "Toko buku", "Kafe"], answer: 3 },
-            { question: "Apa hobi yang disebutkan oleh pembicara?", options: ["Berenang", "Membaca buku", "Menonton drama", "Bermain game"], answer: 2 },
-            { question: "Dengarkan ramalan cuaca. Besok cuacanya bagaimana?", options: ["Cerah", "Hujan", "Berawan", "Salju"], answer: 1 },
-            { question: "Pembicara sedang membicarakan musim apa?", options: ["Musim semi", "Musim panas", "Musim gugur", "Musim dingin"], answer: 2 },
-            { question: "Apa nama makanan yang disebutkan?", options: ["Tteokbokki", "Kimbap", "Ramyeon", "Jajangmyeon"], answer: 0 },
-            { question: "Berapa harga tiket yang disebutkan?", options: ["15,000 won", "20,000 won", "25,000 won", "30,000 won"], answer: 1 },
-            { question: "Dengarkan instruksi. Ke mana harus berbelok?", options: ["Kiri", "Kanan", "Lurus", "Putar balik"], answer: 1 },
-            { question: "Apa pekerjaan orang yang diwawancarai?", options: ["Dokter", "Guru", "Programmer", "Desainer"], answer: 2 },
-            { question: "Dengarkan dan pilih jawaban yang tepat untuk '어디 살아요?'", options: ["서울", "학교", "집", "회사"], answer: 0 },
-            { question: "Pembicara sedang memesan berapa orang?", options: ["2 orang", "3 orang", "4 orang", "5 orang"], answer: 2 },
-            { question: "Apa yang hilang dari pembicara?", options: ["Dompet", "Ponsel", "Kunci", "Tas"], answer: 1 },
-            { question: "Dengarkan jam. Sekarang jam berapa?", options: ["3:15", "3:30", "3:45", "4:00"], answer: 2 },
-            { question: "Apa hubungan antara kedua pembicara?", options: ["Teman", "Kakak-adik", "Guru-murid", "Atasan-bawahan"], answer: 0 },
-            { question: "Di mana percakapan ini terjadi?", options: ["Bandara", "Terminal bus", "Stasiun kereta", "Pelabuhan"], answer: 0 },
-            { question: "Apa rencana akhir pekan pembicara?", options: ["Pergi hiking", "Nonton bioskop", "Belanja", "Tidur"], answer: 1 },
-            { question: "Pembicara menyukai K-pop grup apa?", options: ["BTS", "BLACKPINK", "TWICE", "EXO"], answer: 0 },
-            // Reading 21-40
-            { question: "Baca teks: '저는 매일 아침 7시에 일어나요. 그리고 학교에 가요.'<br>Pembicara bangun jam berapa?", options: ["6 pagi", "7 pagi", "8 pagi", "9 pagi"], answer: 1 },
-            { question: "Baca: '이 가게는 10시부터 9시까지 영업해요.'<br>Toko buka sampai jam berapa?", options: ["8 malam", "9 malam", "10 malam", "11 malam"], answer: 1 },
-            { question: "Baca pengumuman: '내일 학교 쉬어요.'<br>Artinya besok...", options: ["Ada ujian", "Libur sekolah", "Ada acara", "Masuk seperti biasa"], answer: 1 },
-            { question: "Baca: '김치찌개는 매워요. 불고기는 달아요.'<br>Makanan mana yang pedas?", options: ["Bibimbap", "Kimchi jjigae", "Bulgogi", "Kimbap"], answer: 1 },
-            { question: "Baca teks tentang Seoul. Ibukota Korea adalah...", options: ["Busan", "Incheon", "Seoul", "Jeju"], answer: 2 },
-            { question: "Baca: '한글은 세종대왕이 만들었어요.'<br>Siapa yang menciptakan Hangul?", options: ["Yi Sun-sin", "Sejong Agung", "Gwanggaeto", "Dae Jo-yeong"], answer: 1 },
-            { question: "Baca jadwal kereta: '서울 → 부산 14:30 출발'<br>Kereta berangkat jam...", options: ["13:30", "14:00", "14:30", "15:00"], answer: 2 },
-            { question: "Baca menu: '아메리카노 4,000원, 카페라떼 4,500원'<br>Yang lebih mahal adalah...", options: ["Americano", "Cafe latte", "Kedua sama", "Tidak disebutkan"], answer: 1 },
-            { question: "Baca: '제 취미는 독서예요. 책을 좋아해요.'<br>Hobi pembicara adalah...", options: ["Olahraga", "Membaca buku", "Musik", "Memasak"], answer: 1 },
-            { question: "Baca ramalan cuaca: '주말에 비가 와요.'<br>Akhir pekan akan...", options: ["Cerah", "Hujan", "Berangin", "Salju"], answer: 1 },
-            { question: "Baca: '한국 드라마를 자주 봐요. 특히 로맨틱 코미디를 좋아해요.'<br>Pembicara suka drama genre...", options: ["Thriller", "Romantic comedy", "Historical", "Action"], answer: 1 },
-            { question: "Baca papan nama: '출구 →'<br>Artinya arah ke...", options: ["Masuk", "Keluar", "Toilet", "Tangga"], answer: 1 },
-            { question: "Baca: '이 옷은 작아요. 큰 사이즈 있어요?'<br>Pembicara bilang baju itu...", options: ["Terlalu besar", "Terlalu kecil", "Pas", "Mahal"], answer: 1 },
-            { question: "Baca undangan: '생일 파티 토요일 6시 제 집'<br>Pesta ulang tahun diadakan hari...", options: ["Jumat", "Sabtu", "Minggu", "Senin"], answer: 1 },
-            { question: "Baca: '지하철 2호선 타세요.'<br>Naik jalur subway nomor...", options: ["1", "2", "3", "4"], answer: 1 },
-            { question: "Baca resep: '먼저 밥을 짓고, 김치를 넣어요.'<br>Langkah pertama adalah...", options: ["Potong kimchi", "Masak nasi", "Tambah telur", "Aduk"], answer: 1 },
-            { question: "Baca: '저는 한국어가 조금 할 수 있어요.'<br>Pembicara bisa bahasa Korea...", options: ["Lancar", "Sedikit", "Tidak sama sekali", "Seperti native"], answer: 1 },
-            { question: "Baca iklan: '특별 할인! 50% OFF'<br>Diskon berapa persen?", options: ["30%", "40%", "50%", "70%"], answer: 2 },
-            { question: "Baca: '가족은 4명이에요. 아버지, 어머니, 언니, 나.'<br>Pembicara punya kakak...", options: ["Adik laki", "Adik perempuan", "Kakak perempuan", "Kakak laki"], answer: 2 },
-            { question: "Baca: '오늘은 2025년 12월 28일 일요일입니다.'<br>Hari ini adalah hari...", options: ["Senin", "Sabtu", "Minggu", "Jumat"], answer: 2 }
-        ];
-
-        function loadQuestion() {
-            const q = questions[currentQ];
-            document.getElementById('questionTitle').textContent = `Soal ${currentQ + 1} - ${currentQ < 20 ? 'Listening' : 'Reading'}`;
-            document.getElementById('questionText').innerHTML = q.question;
-
-            const optionsDiv = document.getElementById('options');
-            optionsDiv.innerHTML = q.options.map((opt, idx) => `
-                <label>
-                    <input type="radio" name="answer" value="${idx}" ${answers[currentQ] === idx ? 'checked' : ''}>
-                    <span>${String.fromCharCode(65 + idx)}. ${opt}</span>
-                </label>
-            `).join('');
-
-            document.querySelectorAll('input[name="answer"]').forEach(input => {
-                input.onchange = () => {
-                    answers[currentQ] = parseInt(input.value);
-                    localStorage.setItem('answers', JSON.stringify(answers));
-                };
-            });
-
-            document.getElementById('prevBtn').disabled = currentQ === 0;
-            document.getElementById('nextBtn').disabled = currentQ === 39;
-        }
-
-        function goPrev() { if (currentQ > 0) window.location.href = `question.html?q=${currentQ - 1}`; }
-        function goNext() { if (currentQ < 39) window.location.href = `question.html?q=${currentQ + 1}`; }
-        function goBack() { window.location.href = 'exam.html'; }
-
-        loadQuestion();
-    </script>
+<script src="script.js"></script>
 </body>
 </html>
