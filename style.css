@@ -191,38 +191,66 @@ input,button{
 
 /* dialog / bacaan */
 .dialog-box{
-  background: #f2ebed;        /* tetap putih */
-  
+  background: #f2ebed;        
   padding: 18px 20px;
   margin: 0 0 16px 15px;
-
   width: 70%;
   max-width: 720px;
-
   border-radius: 0;
-
   white-space: pre-line;
   line-height: 1.9;
   font-size: 20px;
-
-  /* 🔥 KUNCI KERAPIAN PARAGRAF PANJANG */
   text-align: justify;
-  word-break: keep-all;      /* bahasa Korea rapi */
+  word-break: keep-all;
   overflow-wrap: break-word;
   hyphens: none;
 }
 
-/* paragraf dalam dialog */
 .dialog-box p{
   margin: 0 0 10px 0;
 }
 .dialog-box p:last-child{
   margin-bottom: 0;
 }
-/* mobile */
 @media (max-width: 768px){
   .dialog-box{
     width: 95%;
     font-size: 18px;
+  }
+}
+
+/* =====================================================
+   PERBAIKAN AUDIO & GAMBAR (REQUEST)
+===================================================== */
+
+/* Audio player - border radius 0 & full width */
+#questionBox audio {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto 20px auto;
+  display: block;
+  border-radius: 0 !important;
+  outline: none;
+}
+
+/* Optional: clean look */
+#questionBox audio::-webkit-media-controls-panel {
+  background: #f9f9f9;
+  border-radius: 0;
+}
+
+/* Gambar soal - rasio terjaga & responsif */
+#questionBox img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 20px auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  #questionBox audio {
+    margin: 0 0 16px 0;
   }
 }
