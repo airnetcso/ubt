@@ -2,37 +2,45 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Admin - Hasil UBT</title>
+<title>Admin - HASIL UBT (Semua Paket)</title>
 <style>
-body{
-  font-family:Arial;
-  padding:20px;
-}
-table{
-  border-collapse:collapse;
-  width:100%;
-}
-th,td{
-  border:1px solid #999;
-  padding:8px;
-  text-align:center;
-}
-th{
-  background:#eee;
-}
+body { font-family:Arial; padding:20px; background:#f5f5f5; }
+h2 { color:#333; text-align:center; }
+table { border-collapse:collapse; width:100%; margin:20px 0; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+th, td { border:1px solid #ddd; padding:12px; text-align:center; }
+th { background:#4f46e5; color:white; font-weight:bold; }
+tr:nth-child(even) { background:#f9fafb; }
+.lulus { background:#10b981 !important; color:white; font-weight:bold; }
+.belum { background:#ef4444 !important; color:white; font-weight:bold; }
+.paket { font-weight:bold; color:#4f46e5; }
+.filter { margin:20px 0; text-align:center; }
+.filter input { padding:8px; margin:0 10px; border:1px solid #ddd; border-radius:5px; }
 </style>
 </head>
 <body>
+<script>
+if(localStorage.getItem("login") !== "true" || localStorage.getItem("role") !== "admin") {
+  location.href = "index.html";
+}
+</script>
 
-<h2>HASIL UBT</h2>
+<h2>📊 HASIL UBT - PROGRESS PAKET URUTAN</h2>
+
+<div class="filter">
+  <input id="searchUser" placeholder="Cari user..." onkeyup="filterTable()">
+  <input id="searchPaket" placeholder="Cari paket..." onkeyup="filterTable()">
+</div>
 
 <table>
 <thead>
 <tr>
   <th>No</th>
-  <th>Nama</th>
+  <th>User</th>
+  <th>Paket</th>
   <th>Nilai</th>
-  <th>Waktu</th>
+  <th>Status</th>
+  <th>Soal Dikerjakan</th>
+  <th>Waktu Sisa</th>
   <th>Tanggal</th>
 </tr>
 </thead>
@@ -40,25 +48,45 @@ th{
 </table>
 
 <script>
-const data = JSON.parse(localStorage.getItem("results") || "[]");
+const results = JSON.parse(localStorage.getItem("results") || "[]");
 const tbody = document.getElementById("data");
 
-if(data.length === 0){
-  tbody.innerHTML = "<tr><td colspan='5'>BELUM ADA DATA</td></tr>";
-}else{
-  data.forEach((d,i)=>{
-    tbody.innerHTML += `
-      <tr>
-        <td>${i+1}</td>
-        <td>${d.name}</td>
-        <td>${d.score}</td>
-        <td>${d.time}</td>
-        <td>${d.date}</td>
-      </tr>
-    `;
-  });
-}
-</script>
+function renderTable(data) {
+  if (data.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='8' style='padding:50px;color:#666'>BELUM ADA DATA HASIL</td></tr>";
+    return;
+  }
 
+  data.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  tbody.innerHTML = data.map((r, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${r.user}</td>
+      <td class="paket">Paket ${r.paket}</td>
+      <td><strong>${r.score}</strong></td>
+      <td class="${r.status === 'LULUS' ? 'lulus' : 'belum'}">${r.status}</td>
+      <td>${r.answeredCount}/${r.totalQuestions}</td>
+      <td>${r.time}</td>
+      <td>${r.date}</td>
+    </tr>
+  `).join('');
+}
+
+function filterTable() {
+  const userFilter = document.getElementById("searchUser").value.toLowerCase();
+  const paketFilter = document.getElementById("searchPaket").value.toLowerCase();
+  
+  const filtered = results.filter(r => 
+    r.user.toLowerCase().includes(userFilter) &&
+    r.paket.includes(paketFilter)
+  );
+  
+  renderTable(filtered);
+}
+
+document.getElementById("user").textContent = localStorage.getItem("user");
+renderTable(results);
+</script>
 </body>
 </html>
