@@ -148,50 +148,80 @@ input,button{
   border-color: #38bdf8;
 }
 
-/* ===== NAV BUTTON ===== */
-.nav-buttons{
+/* ===== NAV BUTTON — PERBAIKAN POSISI TERBARU ===== */
+.nav-buttons {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
   background: #fff;
   border-top: 1px solid #ddd;
   z-index: 20;
+  box-sizing: border-box;
 }
-.nav-buttons button{
+
+.nav-buttons button {
   background-color: #3498db;
   color: #fff;
   border: none;
-  padding: 10px 18px;
+  padding: 12px 20px;
   font-weight: bold;
-  min-width: 120px;
+  min-width: 140px;
+  border-radius: 0;
+  flex: 1;
+  margin: 0 8px;
 }
-.nav-buttons button:hover{
+
+.nav-buttons button:hover {
   background-color: #2980b9;
 }
-@media (orientation: landscape){
-  .nav-buttons{
-    max-width: 600px;
+
+/* Tombol tengah (KEMBALI) warna beda */
+.nav-buttons button:nth-child(2) {
+  background-color: #7f8c8d;
+}
+
+.nav-buttons button:nth-child(2):hover {
+  background-color: #95a5a6;
+}
+
+/* Mobile portrait */
+@media (max-width: 600px) {
+  .nav-buttons {
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
+  .nav-buttons button {
+    margin: 0;
+    min-width: unset;
+    padding: 14px;
+  }
+}
+
+/* Landscape */
+@media (orientation: landscape) {
+  .nav-buttons {
+    max-width: 800px;
     margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
 /* =====================================================
-   FINAL — DIALOG BOX & PARAGRAF READING
+   DIALOG BOX & PARAGRAF READING
 ===================================================== */
-
-/* judul / nomor soal */
 .col-right h3{
   margin: 0 0 10px 15px;
 }
 
-/* dialog / bacaan */
 .dialog-box{
-  background: #f2ebed;        
+  background: #f2ebed;
   padding: 18px 20px;
   margin: 0 0 16px 15px;
   width: 70%;
@@ -212,18 +242,30 @@ input,button{
 .dialog-box p:last-child{
   margin-bottom: 0;
 }
+
+/* KHUSUS SOAL 37 & 38 — RATA TENGAH VERTIKAL */
+.dialog-box.center-vertikal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  height: auto;
+  padding: 30px 20px;
+  background: #f2ebed;
+}
+
 @media (max-width: 768px){
   .dialog-box{
     width: 95%;
     font-size: 18px;
   }
+  .dialog-box.center-vertikal {
+    padding: 25px 20px;
+  }
 }
 
-/* =====================================================
-   PERBAIKAN AUDIO & GAMBAR (REQUEST)
-===================================================== */
-
-/* Audio player - border radius 0 & full width */
+/* AUDIO & GAMBAR */
 #questionBox audio {
   width: 100%;
   max-width: 680px;
@@ -233,13 +275,11 @@ input,button{
   outline: none;
 }
 
-/* Optional: clean look */
 #questionBox audio::-webkit-media-controls-panel {
   background: #f9f9f9;
   border-radius: 0;
 }
 
-/* Gambar soal - rasio terjaga & responsif */
 #questionBox img {
   max-width: 100%;
   height: auto;
