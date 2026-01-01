@@ -78,21 +78,21 @@ function loadQuestionPage() {
     qArea.appendChild(dialog);
   }
 
-  // Image
-  if (q.image) {
-    const img = document.createElement("img");
-    img.src = q.image;
-    img.style.maxWidth = "100%";
-    img.style.marginBottom = "10px";
-    qArea.appendChild(img);
-  }
-
-  // Audio
+  // AUDIO DIPINDAH KE ATAS (sebelum gambar)
   if (q.audio) {
     const audio = document.createElement("audio");
     audio.src = q.audio;
     audio.controls = true;
+    audio.style.width = "100%";
     qArea.appendChild(audio);
+  }
+
+  // GAMBAR (setelah audio)
+  if (q.image) {
+    const img = document.createElement("img");
+    img.src = q.image;
+    img.alt = "Gambar soal " + q.id;
+    qArea.appendChild(img);
   }
 
   // Pilihan jawaban
@@ -168,7 +168,6 @@ function submitExam() {
 
   alert(`🎉 Selesai Paket ${paket}!\nNilai: ${score.toFixed(1)}/100\n${score >= 70 ? "✅ LULUS! Bisa lanjut paket berikutnya" : "📚 Belum lulus (minimal 70)"}`);
 
-  // SIMPAN KE RESULTS UNTUK ADMIN
   let results = JSON.parse(localStorage.getItem("results") || "[]");
   results.push({
     user: user,
@@ -182,11 +181,10 @@ function submitExam() {
   });
   localStorage.setItem("results", JSON.stringify(results));
 
-  // Reset jawaban paket ini
   localStorage.removeItem("answered");
   localStorage.removeItem("current");
 
-  location.href = "index.html"; // Kembali ke login untuk pilih paket berikutnya
+  location.href = "index.html";
 }
 
 function autoSubmit() {
