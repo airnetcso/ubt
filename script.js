@@ -74,20 +74,25 @@ function loadQuestionPage() {
   if (parts[1]) {
     const dialog = document.createElement("div");
     dialog.className = "dialog-box";
+
+    // KHUSUS SOAL 37 & 38: rata tengah vertikal
+    if (q.id === 37 || q.id === 38) {
+      dialog.classList.add("center-vertikal");
+    }
+
     dialog.textContent = parts.slice(1).join("\n\n");
     qArea.appendChild(dialog);
   }
 
-  // AUDIO DIPINDAH KE ATAS (sebelum gambar)
+  // Audio (di atas gambar)
   if (q.audio) {
     const audio = document.createElement("audio");
     audio.src = q.audio;
     audio.controls = true;
-    audio.style.width = "100%";
     qArea.appendChild(audio);
   }
 
-  // GAMBAR (setelah audio)
+  // Gambar (di bawah audio)
   if (q.image) {
     const img = document.createElement("img");
     img.src = q.image;
