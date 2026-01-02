@@ -1,206 +1,150 @@
-let questions = [];
-let answered = JSON.parse(localStorage.getItem("answered") || "{}");
-let currentIndex = 0;
-const PAKET_FOLDER = "soal/";
+let questions=[];
+let answered=JSON.parse(localStorage.getItem("answered")||"{}");
+let currentIndex=0;
 
-async function loadSoal() {
-  const paket = localStorage.getItem("paketSoal") || "1";
-  const url = `${PAKET_FOLDER}soal-paket${paket}.json`;
+const paket=localStorage.getItem("paket")||"1";
+const soalURL=`https://airnetcso.github.io/ubt/soal/soal${paket}.json`;
 
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Gagal memuat soal-paket${paket}.json`);
-    questions = await res.json();
-
-    const title = document.querySelector("title");
-    if (title) title.textContent = `UBT - Paket ${paket}`;
-
-    buildGrid();
-    if (document.getElementById("questionBox")) loadQuestionPage();
-  } catch (err) {
-    console.error(err);
-    alert("Error load soal: " + err.message + "\nPastikan file soal-paket" + localStorage.getItem("paketSoal") + ".json ada di folder soal/");
-  }
+/* ================= LOAD SOAL ================= */
+async function loadSoal(){
+  const res=await fetch(soalURL);
+  questions=await res.json();
+  buildGrid();
 }
 
-function buildGrid() {
-  const L = document.getElementById("listen");
-  const R = document.getElementById("read");
-  if (!L || !R) return;
+/* ================= DASHBOARD GRID ================= */
+function buildGrid(){
+  const L=document.getElementById("listen");
+  const R=document.getElementById("read");
+  if(!L||!R) return;
 
-  L.innerHTML = "";
-  R.innerHTML = "";
-
-  questions.forEach(q => {
-    const box = document.createElement("div");
-    box.className = "qbox";
-    box.textContent = q.id;
-
-    if (answered[q.id] !== undefined) {
-      box.classList.add("done");
-    }
-
-    box.onclick = () => {
-      localStorage.setItem("current", q.id);
-      location.href = "question.html";
+  L.innerHTML=""; R.innerHTML="";
+  questions.forEach(q=>{
+    const box=document.createElement("div");
+    box.className="qbox";
+    box.textContent=q.id;
+    if(answered[q.id]) box.classList.add("done");
+    box.onclick=()=>{
+      localStorage.setItem("current",q.id);
+      location.href="question.html";
     };
-
-    q.type === "listening" ? L.appendChild(box) : R.appendChild(box);
+    (q.type==="listening"?L:R).appendChild(box);
   });
 }
 
-function loadQuestionPage() {
-  const qArea = document.getElementById("questionBox");
-  const ansDiv = document.getElementById("answers");
-  if (!qArea || !ansDiv) return;
+/* ================= QUESTION PAGE ================= */
+function loadQuestionPage(){
+  const box=document.getElementById("questionBox");
+  const ans=document.getElementById("answers");
+  if(!box||!ans) return;
 
-  const id = Number(localStorage.getItem("current"));
-  const idx = questions.findIndex(q => q.id === id);
-  if (idx < 0) return;
+  const id=Number(localStorage.getItem("current"));
+  const idx=questions.findIndex(q=>q.id===id);
+  currentIndex=idx<0?0:idx;
+  const q=questions[currentIndex];
 
-  currentIndex = idx;
-  const q = questions[idx];
+  box.innerHTML=""; ans.innerHTML="";
 
-  qArea.innerHTML = "";
-  ansDiv.innerHTML = "";
+  const h=document.createElement("h3");
+  h.textContent=q.id+". "+q.question.split("\n\n")[0];
+  box.appendChild(h);
 
-  // Judul soal
-  const parts = q.question.split("\n\n");
-  const title = document.createElement("h3");
-  title.textContent = q.id + ". " + parts[0];
-  qArea.appendChild(title);
-
-  // Dialog/bacaan
-  if (parts[1]) {
-    const dialog = document.createElement("div");
-    dialog.className = "dialog-box";
-
-    // KHUSUS SOAL 37 & 38: rata tengah vertikal
-    if (q.id === 37 || q.id === 38) {
-      dialog.classList.add("center-vertikal");
-    }
-
-    dialog.textContent = parts.slice(1).join("\n\n");
-    qArea.appendChild(dialog);
+  if(q.question.includes("\n\n")){
+    const d=document.createElement("div");
+    d.className="dialog-box";
+    if(q.id===37||q.id===38) d.classList.add("dialog-center");
+    d.textContent=q.question.split("\n\n").slice(1).join("\n\n");
+    box.appendChild(d);
   }
 
-  // Audio (di atas gambar)
-  if (q.audio) {
-    const audio = document.createElement("audio");
-    audio.src = q.audio;
-    audio.controls = true;
-    qArea.appendChild(audio);
+  if(q.audio){
+    const a=document.createElement("audio");
+    a.controls=true;
+    a.src=q.audio;
+    a.preload="auto";
+    box.appendChild(a);
   }
 
-  // Gambar (di bawah audio)
-  if (q.image) {
-    const img = document.createElement("img");
-    img.src = q.image;
-    img.alt = "Gambar soal " + q.id;
-    qArea.appendChild(img);
+  if(q.image){
+    const i=document.createElement("img");
+    i.src=q.image;
+    box.appendChild(i);
   }
 
-  // Pilihan jawaban
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = i + 1;
-    if (answered[q.id] === i + 1) btn.classList.add("selected");
-
-    btn.onclick = () => {
-      answered[q.id] = i + 1;
-      localStorage.setItem("answered", JSON.stringify(answered));
-      ansDiv.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
+  q.options.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.textContent=i+1;
+    if(answered[q.id]===i+1) b.classList.add("selected");
+    b.onclick=()=>{
+      answered[q.id]=i+1;
+      localStorage.setItem("answered",JSON.stringify(answered));
+      loadQuestionPage();
     };
-
-    const row = document.createElement("div");
-    row.style.display = "flex";
-    row.style.alignItems = "center";
-    row.style.gap = "10px";
-    row.appendChild(btn);
-    row.appendChild(document.createTextNode(opt));
-    ansDiv.appendChild(row);
+    const row=document.createElement("div");
+    row.appendChild(b);
+    row.append(o);
+    ans.appendChild(row);
   });
 }
 
-function nextQuestion() {
-  if (currentIndex + 1 < questions.length) {
-    localStorage.setItem("current", questions[currentIndex + 1].id);
+/* ================= NAV ================= */
+function nextQuestion(){
+  if(currentIndex+1<questions.length){
+    localStorage.setItem("current",questions[currentIndex+1].id);
     loadQuestionPage();
-  } else {
-    alert("Ini soal terakhir");
   }
 }
-
-function prevQuestion() {
-  if (currentIndex > 0) {
-    localStorage.setItem("current", questions[currentIndex - 1].id);
+function prevQuestion(){
+  if(currentIndex>0){
+    localStorage.setItem("current",questions[currentIndex-1].id);
     loadQuestionPage();
-  } else {
-    alert("Ini soal pertama");
   }
 }
+function back(){ location.href="dashboard.html"; }
 
-function back() {
-  location.href = "dashboard.html";
-}
+/* ================= TIMER ================= */
+let time=Number(localStorage.getItem("time"))||50*60;
+setInterval(()=>{
+  time--; localStorage.setItem("time",time);
+  const t=document.getElementById("timerBox");
+  if(t){
+    const m=String(Math.floor(time/60)).padStart(2,"0");
+    const s=String(time%60).padStart(2,"0");
+    t.textContent=`${m}:${s}`;
+  }
+  if(time<=0) finish();
+},1000);
 
-// Timer 50 menit
-let time = 50 * 60;
-setInterval(() => {
-  time--;
-  const m = String(Math.floor(time / 60)).padStart(2, "0");
-  const s = String(time % 60).padStart(2, "0");
-  const t = document.getElementById("timerBox");
-  if (t) t.textContent = `${m}:${s}`;
-  if (time <= 0) autoSubmit();
-}, 1000);
-
-function calculateScore() {
-  let score = 0;
-  questions.forEach(q => {
-    if (answered[q.id] === q.answer) score += 2.5;
+/* ================= SUBMIT ================= */
+function calculateScore(){
+  let s=0;
+  questions.forEach(q=>{
+    if(answered[q.id]===q.answer) s+=2.5;
   });
-  return score;
+  return s;
 }
 
-function submitExam() {
-  const score = calculateScore();
-  const paket = localStorage.getItem("paketSoal");
-  const user = localStorage.getItem("user");
-  const waktu = document.getElementById("timerBox")?.textContent || "00:00";
-  const tanggal = new Date().toLocaleString("id-ID");
+function finish(){
+  const score=calculateScore();
+  const history=JSON.parse(localStorage.getItem("history")||"{}");
+  history[`paket${paket}`]={score};
+  localStorage.setItem("history",JSON.stringify(history));
 
-  alert(`🎉 Selesai Paket ${paket}!\nNilai: ${score.toFixed(1)}/100\n${score >= 70 ? "✅ LULUS! Bisa lanjut paket berikutnya" : "📚 Belum lulus (minimal 70)"}`);
-
-  let results = JSON.parse(localStorage.getItem("results") || "[]");
+  const results=JSON.parse(localStorage.getItem("results")||"[]");
   results.push({
-    user: user,
-    paket: paket,
-    score: score.toFixed(1),
-    time: waktu,
-    date: tanggal,
-    totalQuestions: questions.length,
-    answeredCount: Object.keys(answered).length,
-    status: score >= 70 ? "LULUS" : "BELUM"
+    name:localStorage.getItem("user"),
+    paket:`Paket ${paket}`,
+    score,
+    time:document.getElementById("timerBox")?.innerText,
+    date:new Date().toLocaleString()
   });
-  localStorage.setItem("results", JSON.stringify(results));
+  localStorage.setItem("results",JSON.stringify(results));
 
-  localStorage.removeItem("answered");
-  localStorage.removeItem("current");
-
-  location.href = "index.html";
+  location.href="index.html";
 }
 
-function autoSubmit() {
-  alert("⏰ Waktu habis!");
-  submitExam();
-}
-
-function manualSubmit() {
-  if (confirm("Yakin submit sekarang? Progress akan tersimpan.")) {
-    submitExam();
-  }
-}
-
-window.onload = loadSoal;
+/* ================= INIT ================= */
+window.onload=async()=>{
+  await loadSoal();
+  loadQuestionPage(); // 🔥 FIX SOAL KOSONG
+};
