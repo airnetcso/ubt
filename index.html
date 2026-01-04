@@ -135,16 +135,16 @@ function login(){
   localStorage.setItem("user",u);
   localStorage.setItem("paket",paket);
 
-  // PERUBAHAN: Admin redirect ke admin-local.html (cek cepat nilai ubt)
+  // PERUBAHAN: Admin langsung ke admin pusat di repo terpisah
   if (user.role === "admin") {
-    location.href = "admin-local.html";
+    location.href = "https://airnetcso.github.io/admin/";
   } else {
     location.href = "dashboard.html";
   }
 }
 </script>
 
-<!-- INTEGRASI ADMIN PUSAT (tetap jalan otomatis) -->
+<!-- INTEGRASI ADMIN PUSAT (sync data ke repo admin terpisah) -->
 <script>
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function(key, value) {
