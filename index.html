@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Login CBT</title>
-
 <style>
 *{
   box-sizing:border-box;
   font-family:Arial, Helvetica, sans-serif
 }
-
 body{
   margin:0;
   height:100vh;
@@ -21,7 +19,6 @@ body{
     url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
     center/cover no-repeat;
 }
-
 /* LOGIN BOX */
 .login-box{
   width:340px;
@@ -31,12 +28,10 @@ body{
   backdrop-filter:blur(6px);
   border-radius:10px;
 }
-
 .login-box h2{
   margin-bottom:20px;
   color:#fff;
 }
-
 input, select, button{
   width:100%;
   padding:12px;
@@ -45,29 +40,24 @@ input, select, button{
   border-radius:6px;
   border:none;
 }
-
 input, select{
   outline:none;
 }
-
 button{
   background:#2563eb;
   color:#fff;
   cursor:pointer;
   font-weight:bold;
 }
-
 button:hover{
   background:#1e40af;
 }
-
 #error-msg{
   color:#ff0000;
   font-weight:bold;
   margin-top:10px;
   font-size:13px;
 }
-
 /* COPYRIGHT */
 .copyright{
   position:fixed;
@@ -80,25 +70,19 @@ button:hover{
 }
 </style>
 </head>
-
 <body>
-
 <div class="login-box">
   <h2>LOGIN UBT</h2>
-
   <input id="username" placeholder="Username / 이름">
   <input id="password" type="password" placeholder="Password / 비밀번호">
-
   <select id="paket">
     <option value="1">TRYOUT 01</option>
     <option value="2">TRYOUT 02</option>
     <option value="3">TRYOUT 03</option>
   </select>
-
   <button onclick="login()">LOGIN / 로그인</button>
   <div id="error-msg"></div>
 </div>
-
 <div class="copyright">
   © 2026 Denzuka - Kim Jongun. All Rights Reserved.
 </div>
@@ -113,7 +97,6 @@ function checkStorage(){
     return false;
   }
 }
-
 const users = [
   {username:"siswa01",password:"12345",role:"user"},
   {username:"windi",password:"Windi2000",role:"user"},
@@ -125,47 +108,78 @@ const users = [
   {username:"siswa03",password:"12345",role:"user"},
   {username:"admin",password:"admin123",role:"admin"}
 ];
-
 function login(){
   const err = document.getElementById("error-msg");
   err.innerText = "";
-
   if(!checkStorage()){
     err.innerText = "Browser memblokir localStorage. Gunakan mode normal.";
     return;
   }
-
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
   const paket = document.getElementById("paket").value;
-
   const user = users.find(x => x.username === u && x.password === p);
   if(!user){
     err.innerText = "Username atau password salah!";
     return;
   }
-
   if(Number(paket) > 1){
     const results = JSON.parse(localStorage.getItem("results") || "[]");
-
     const prev = results.find(
       r => r.name === u && Number(r.paket) === Number(paket) - 1
     );
-
     if(!prev || Number(prev.score) < 80){
       err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80";
       return;
     }
   }
-
   localStorage.setItem("login","true");
   localStorage.setItem("user",u);
   localStorage.setItem("paket",paket);
-
   location.href = user.role === "admin"
     ? "admin.html"
     : "dashboard.html";
 }
+</script>
+
+<!-- TAMBAHAN UNTUK INTEGRASI ADMIN PUSAT -->
+<script>
+// Pantau perubahan di localStorage key "results" (yang dipake dashboard.html saat submit)
+const originalSetItem = localStorage.setItem;
+localStorage.setItem = function(key, value) {
+  originalSetItem.apply(this, arguments);
+  
+  if (key === "results") {
+    try {
+      const allResults = JSON.parse(value);
+      const latest = allResults[allResults.length - 1];
+      if (latest && latest.name && latest.score !== undefined) {
+        const centralizedData = {
+          username: latest.name,
+          kode: "TRYOUT " + ("0" + latest.paket).slice(-2),
+          nilai: latest.score,
+          tanggal: new Date().toLocaleString('id-ID'),
+          app: "ubt"
+        };
+
+        let centralResults = JSON.parse(localStorage.getItem("quizResults") || "[]");
+        // Hindari duplikat kalau user refresh
+        const isDuplicate = centralResults.some(r => 
+          r.username === centralizedData.username &&
+          r.kode === centralizedData.kode &&
+          r.nilai === centralizedData.nilai &&
+          r.app === "ubt"
+        );
+        if (!isDuplicate) {
+          centralResults.push(centralizedData);
+          localStorage.setItem("quizResults", JSON.stringify(centralResults));
+        }
+      }
+    } catch (e) {
+      console.error("Gagal proses hasil ke admin pusat:", e);
+    }
+  }
+};
 </script>
 
 </body>
