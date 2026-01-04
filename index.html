@@ -19,7 +19,6 @@ body{
     url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
     center/cover no-repeat;
 }
-/* LOGIN BOX */
 .login-box{
   width:340px;
   background:rgba(255,255,255,.3);
@@ -58,7 +57,6 @@ button:hover{
   margin-top:10px;
   font-size:13px;
 }
-/* COPYRIGHT */
 .copyright{
   position:fixed;
   bottom:12px;
@@ -136,19 +134,15 @@ function login(){
   localStorage.setItem("login","true");
   localStorage.setItem("user",u);
   localStorage.setItem("paket",paket);
-  location.href = user.role === "admin"
-    ? "admin.html"
-    : "dashboard.html";
+  location.href = user.role === "admin" ? "admin.html" : "dashboard.html";
 }
 </script>
 
-<!-- TAMBAHAN UNTUK INTEGRASI ADMIN PUSAT -->
+<!-- INTEGRASI ADMIN PUSAT -->
 <script>
-// Pantau perubahan di localStorage key "results" (yang dipake dashboard.html saat submit)
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function(key, value) {
   originalSetItem.apply(this, arguments);
-  
   if (key === "results") {
     try {
       const allResults = JSON.parse(value);
@@ -161,9 +155,7 @@ localStorage.setItem = function(key, value) {
           tanggal: new Date().toLocaleString('id-ID'),
           app: "ubt"
         };
-
         let centralResults = JSON.parse(localStorage.getItem("quizResults") || "[]");
-        // Hindari duplikat kalau user refresh
         const isDuplicate = centralResults.some(r => 
           r.username === centralizedData.username &&
           r.kode === centralizedData.kode &&
@@ -176,7 +168,7 @@ localStorage.setItem = function(key, value) {
         }
       }
     } catch (e) {
-      console.error("Gagal proses hasil ke admin pusat:", e);
+      console.error("Error sync to central admin:", e);
     }
   }
 };
