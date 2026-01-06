@@ -34,7 +34,7 @@ button:hover{ background:#1e40af; }
 </div>
 
 <script>
-// **URL Google Sheet /koka**
+// URL Google Sheet /koka
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycby4n_2wq6NSRDcKZ5h_EK52P6unhy4hcDKg_svaaXjN5K2kPQXOEYouvEtnQVIKMhHamA/exec";
 
 function checkStorage(){
@@ -79,7 +79,7 @@ function login(){
   else location.href = "dashboard.html";
 }
 
-// === Fungsi kirim skor ke Google Sheet /koka ===
+// === Fungsi kirim skor ke Google Sheet ===
 function sendScoreToSheet(username, paket, score){
   const data = {
     username: username,
@@ -98,13 +98,20 @@ function sendScoreToSheet(username, paket, score){
   .catch(e => console.error("⚠️ Gagal mengirim skor ke Google Sheet. Cek console.", e));
 }
 
-// === Contoh pemanggilan saat quiz selesai ===
-// Di file dashboard.html / quiz JS:
-// let username = localStorage.getItem("user");
-// let paket = localStorage.getItem("paket");
-// let score = 95; // nilai hasil quiz
-// sendScoreToSheet(username, paket, score);
-
+// === OVERRIDE localStorage.setItem untuk kirim skor otomatis ===
+const originalSetItem = localStorage.setItem;
+localStorage.setItem = function(key, value){
+  originalSetItem.apply(this, arguments);
+  if(key === "results"){
+    try{
+      const allResults = JSON.parse(value);
+      const latest = allResults[allResults.length-1];
+      if(latest && latest.name && latest.score !== undefined){
+        sendScoreToSheet(latest.name, latest.paket, latest.score);
+      }
+    }catch(e){ console.error("Error sync skor otomatis:", e); }
+  }
+};
 </script>
 </body>
 </html>
