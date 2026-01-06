@@ -2,183 +2,298 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Login CBT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST KOSA KATA</title>
 <style>
-*{
-  box-sizing:border-box;
-  font-family:Arial, Helvetica, sans-serif
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseCorrect { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes pulseWrong { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
+body {
+  font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+  min-height: 100vh;
+  background: url('https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 20px; color: #fff; position: relative;
 }
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:
-    linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
-    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
-    center/cover no-repeat;
+body::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.35); z-index: 1; }
+.container {
+  position: relative; z-index: 2; width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(16px); border-radius: 24px;
+  padding: 32px; box-shadow: 0 15px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2);
+  animation: fadeIn 0.9s ease-out;
 }
-.login-box{
-  width:340px;
-  background:rgba(255,255,255,.3);
-  padding:30px 25px;
-  text-align:center;
-  backdrop-filter:blur(6px);
-  border-radius:10px;
+h1 { font-size: 34px; text-align: center; margin: 0 0 30px; color: #fff; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
+input[type="text"], input[type="password"] {
+  width: 100%; padding: 16px; margin: 12px 0; font-size: 18px; border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 12px; box-sizing: border-box; background: rgba(255,255,255,0.12); color: white;
+  transition: all 0.3s ease;
 }
-.login-box h2{
-  margin-bottom:20px;
-  color:#fff;
+input::placeholder { color: rgba(255,255,255,0.7); }
+input:focus { border-color: #fff; background: rgba(255,255,255,0.25); outline: none; box-shadow: 0 0 0 5px rgba(255,255,255,0.2); }
+button {
+  width: 100%; padding: 16px; margin: 18px 0 8px; font-size: 20px; font-weight: bold; border: none;
+  border-radius: 12px; color: white; cursor: pointer; background: linear-gradient(90deg, #10b981, #059669);
+  transition: all 0.3s ease;
 }
-input, select, button{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  font-size:14px;
-  border-radius:6px;
-  border:none;
-}
-input, select{
-  outline:none;
-}
-button{
-  background:#2563eb;
-  color:#fff;
-  cursor:pointer;
-  font-weight:bold;
-}
-button:hover{
-  background:#1e40af;
-}
-#error-msg{
-  color:#ff0000;
-  font-weight:bold;
-  margin-top:10px;
-  font-size:13px;
-}
-.copyright{
-  position:fixed;
-  bottom:12px;
-  width:100%;
-  text-align:center;
-  font-size:12px;
-  color:rgba(255,255,255,0.85);
-  letter-spacing:0.5px;
-}
+button:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(16,185,129,0.45); }
+button:active { transform: translateY(-1px); }
+.error { color: #ff6b6b; text-align: center; margin: 12px 0; font-weight: 600; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 10px; }
+.hidden { display: none !important; }
+#timer { text-align: center; font-size: 32px; font-weight: bold; margin: 20px 0; padding: 14px; border-radius: 14px;
+  background: rgba(220,38,38,0.25); transition: all 0.5s; }
+#timer.warning { background: rgba(252,211,77,0.4); color: #fef3c7; animation: pulseWrong 1s infinite alternate; }
+.progress { height: 14px; background: rgba(255,255,255,0.15); border-radius: 7px; margin: 20px 0; overflow: hidden; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, #10b981, #059669); width: 0%; transition: width 0.8s ease; }
+#questionNumber { text-align: center; font-size: 20px; margin: 10px 0; color: #e0f2fe; }
+.question strong { font-size: 48px; display: block; margin: 40px 0 30px; color: #fff; text-align: center;
+  font-weight: 700; text-shadow: 0 3px 12px rgba(0,0,0,0.6); }
+#feedback { text-align: center; font-size: 28px; font-weight: bold; margin: 20px 0; height: 40px; animation: fadeIn 0.5s; }
+.correct { color: #86efac; animation: pulseCorrect 0.6s; }
+.wrong { color: #fca5a5; animation: pulseWrong 0.6s; }
+.wrong-list { font-size: 17px; line-height: 1.9; margin: 25px 0; background: rgba(254,243,199,0.95); color: #92400e;
+  padding: 22px; border-radius: 14px; border-left: 6px solid #ca8a04; }
+.footer { position: relative; z-index: 2; margin-top: 50px; font-size: 14px; color: rgba(255,255,255,0.85); text-align: center; }
 </style>
 </head>
 <body>
-<div class="login-box">
-  <h2>LOGIN UBT</h2>
-  <input id="username" placeholder="Username / 이름">
-  <input id="password" type="password" placeholder="Password / 비밀번호">
-  <select id="paket">
-    <option value="1">TRYOUT 01</option>
-    <option value="2">TRYOUT 02</option>
-    <option value="3">TRYOUT 03</option>
-  </select>
-  <button onclick="login()">LOGIN / 로그인</button>
-  <div id="error-msg"></div>
+<div class="container" id="loginPage">
+  <h1>TEST KOSA KATA</h1>
+  <input type="text" id="username" placeholder="Username / 이름" autocomplete="off">
+  <input type="password" id="password" placeholder="Password / 비밀번호" autocomplete="off">
+  <input type="text" id="kodeSoal" placeholder="Kode Test / 시험코드" autocomplete="off">
+  <div class="error" id="errorMsg"></div>
+  <button onclick="login()">MULAI / 시작</button>
 </div>
-<div class="copyright">
-  © 2026 Denzuka - Kim Jongun. All Rights Reserved.
+<div class="container hidden" id="quizPage">
+  <h1>TEST KOSA KATA</h1>
+  <div id="timer">50:00</div>
+  <div id="questionNumber">Soal 1 dari 50</div>
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  
+  <div id="questionArea">
+    <div id="feedback"></div>
+    <div class="question"><strong id="currentWord"></strong></div>
+    <input type="text" id="answerInput" placeholder="Ketik jawaban di sini" autocomplete="off">
+    <button onclick="submitAnswer()" id="submitBtn">SUBMIT</button>
+  </div>
+  <div id="resultArea" class="hidden">
+    <h2 style="color:#fff; margin-bottom:20px; text-align:center;">Hasil Test</h2>
+    <p id="scoreText" style="font-size:32px; font-weight:bold; color:#d1fae5; text-align:center;"></p>
+    <div id="wrongWords" class="wrong-list hidden"></div>
+    <button onclick="restartQuiz()" style="background:linear-gradient(90deg, #3b82f6, #2563eb); margin-top:20px;">
+      ULANGI LAGI
+    </button>
+    <button onclick="backToLogin()" style="background:linear-gradient(90deg, #6b7280, #4b5563); margin-top:10px;">
+      KEMBALI KE LOGIN
+    </button>
+  </div>
 </div>
-
+<div class="footer">© 2026 Denzuka - Kim Jongun. All rights reserved.</div>
 <script>
-function checkStorage(){
-  try{
-    localStorage.setItem("test","ok");
-    localStorage.removeItem("test");
-    return true;
-  }catch(e){
-    return false;
-  }
-}
+// **UPDATE HANYA SPREADSHEET_URL**
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycby4n_2wq6NSRDcKZ5h_EK52P6unhy4hcDKg_svaaXjN5K2kPQXOEYouvEtnQVIKMhHamA/exec";
+
 const users = [
-  {username:"siswa01",password:"12345",role:"user"},
-  {username:"windi",password:"Windi2000",role:"user"},
-  {username:"rismaya97",password:"bahasakorea",role:"user"},
-  {username:"sita77",password:"minyooki",role:"user"},
-  {username:"Aini185",password:"Doraemon",role:"user"},
-  {username:"Hangeulfei",password:"studykorea02",role:"user"},
-  {username:"Hamdan106",password:"Fukuo106",role:"user"},
-  {username:"Heri",password:"heri99",role:"user"},
-  {username:"admin",password:"admin123",role:"admin"}
+  {username:"uus",password:"123"},
+  {username:"hanarizka",password:"Nungkihana24!"},
+  {username:"Heri",password:"heri99"},
+  {username:"siswa01",password:"12345"},
+  {username:"windi",password:"Windi2000"},
+  {username:"rismaya97",password:"bahasakorea"},
+  {username:"wantikas",password:"200022",role:"admin"},
+  {username:"Fikrisurya",password:"464646"},
+  {username:"Mutiara2003",password:"Mutiara14"},
+  {username:"sita77",password:"minyooki"},
+  {username:"Aini185",password:"Doraemon"},
+  {username:"Hangeulfei",password:"studykorea02"},
+  {username:"Hamdan106",password:"Fukuo106"}
 ];
-function login(){
-  const err = document.getElementById("error-msg");
-  err.innerText = "";
-  if(!checkStorage()){
-    err.innerText = "Browser memblokir localStorage. Gunakan mode normal.";
-    return;
-  }
-  const u = document.getElementById("username").value.trim();
-  const p = document.getElementById("password").value.trim();
-  const paket = document.getElementById("paket").value;
-  const user = users.find(x => x.username === u && x.password === p);
-  if(!user){
-    err.innerText = "Username atau password salah!";
-    return;
-  }
-  if(Number(paket) > 1){
-    const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(
-      r => r.name === u && Number(r.paket) === Number(paket) - 1
-    );
-    if(!prev || Number(prev.score) < 80){
-      err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80";
-      return;
-    }
-  }
-  localStorage.setItem("login","true");
-  localStorage.setItem("user",u);
-  localStorage.setItem("paket",paket);
 
-  // PERUBAHAN: Admin langsung ke admin pusat di repo terpisah
-  if (user.role === "admin") {
-    location.href = "https://airnetcso.github.io/admin/";
+const kodeMapping = {
+  "H050126": "soal1.json",
+  "SAREWAE": "test.json",
+  "R43213": "soal2.json",
+  "Z21985": "soal3.json"
+};
+
+let questions = [], currentIndex = 0, score = 0, wrongList = [], timerInterval, timeLeft = 3000;
+let username = "", kodeSoal = "";
+
+function login() {
+  username = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+  kodeSoal = document.getElementById("kodeSoal").value.trim().toUpperCase();
+  const error = document.getElementById("errorMsg");
+  error.textContent = "";
+  if (!username || !pass || !kodeSoal) { error.textContent = "Lengkapi semua kolom!"; return; }
+  const fileName = kodeMapping[kodeSoal];
+  if (!fileName) { error.textContent = "Kode akses tidak valid!"; return; }
+  const user = users.find(u => u.username === username && u.password === pass);
+  if (!user) { error.textContent = "Username / Password salah!"; return; }
+  if (user.role === "admin") { location.href = "https://airnetcso.github.io/admin/"; return; }
+  loadQuestions(fileName).then(() => {
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("quizPage").classList.remove("hidden");
+    startQuiz();
+  }).catch(err => {
+    error.textContent = "Gagal memuat soal: " + err.message;
+    console.error(err);
+  });
+}
+
+async function loadQuestions(fileName) {
+  const res = await fetch(fileName);
+  if (!res.ok) throw new Error("File soal tidak ditemukan atau error jaringan");
+  const data = await res.json();
+  questions = data.sort(() => 0.5 - Math.random());
+}
+
+function startQuiz() {
+  currentIndex = 0; score = 0; wrongList = []; timeLeft = 3000;
+  updateTimer(); updateQuestionNumber(); updateProgress();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) finishQuiz();
+  }, 1000);
+  nextQuestion();
+}
+
+function updateTimer() {
+  const m = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  const s = String(timeLeft % 60).padStart(2, "0");
+  const timerEl = document.getElementById("timer");
+  timerEl.textContent = `${m}:${s}`;
+  if (timeLeft <= 300) {
+    timerEl.classList.add("warning");
   } else {
-    location.href = "dashboard.html";
+    timerEl.classList.remove("warning");
   }
 }
-</script>
 
-<!-- INTEGRASI ADMIN PUSAT (sync data ke repo admin terpisah) -->
-<script>
-const originalSetItem = localStorage.setItem;
-localStorage.setItem = function(key, value) {
-  originalSetItem.apply(this, arguments);
-  if (key === "results") {
-    try {
-      const allResults = JSON.parse(value);
-      const latest = allResults[allResults.length - 1];
-      if (latest && latest.name && latest.score !== undefined) {
-        const centralizedData = {
-          username: latest.name,
-          kode: "TRYOUT " + ("0" + latest.paket).slice(-2),
-          nilai: latest.score,
-          tanggal: new Date().toLocaleString('id-ID'),
-          app: "ubt"
-        };
-        let centralResults = JSON.parse(localStorage.getItem("quizResults") || "[]");
-        const isDuplicate = centralResults.some(r => 
-          r.username === centralizedData.username &&
-          r.kode === centralizedData.kode &&
-          r.nilai === centralizedData.nilai &&
-          r.app === "ubt"
-        );
-        if (!isDuplicate) {
-          centralResults.push(centralizedData);
-          localStorage.setItem("quizResults", JSON.stringify(centralResults));
-        }
-      }
-    } catch (e) {
-      console.error("Error sync to central admin:", e);
+function updateQuestionNumber() {
+  document.getElementById("questionNumber").textContent = `Soal ${currentIndex + 1} dari ${questions.length}`;
+}
+
+function updateProgress() {
+  const percent = ((currentIndex) / questions.length) * 100;
+  document.getElementById("progressBar").style.width = percent + "%";
+}
+
+function nextQuestion() {
+  if (currentIndex >= questions.length) { finishQuiz(); return; }
+  document.getElementById("currentWord").textContent = questions[currentIndex].korea;
+  document.getElementById("answerInput").value = "";
+  document.getElementById("answerInput").focus();
+  document.getElementById("feedback").textContent = "";
+  updateQuestionNumber();
+  updateProgress();
+}
+
+function submitAnswer() {
+  const answer = document.getElementById("answerInput").value.trim();
+  if (!answer) return;
+  const feedback = document.getElementById("feedback");
+  const q = questions[currentIndex];
+  const normUser = answer.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+
+  let correctAnswers = Array.isArray(q.indo)
+    ? q.indo.map(a => a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim())
+    : [q.indo.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim()];
+
+  let isCorrect = correctAnswers.includes(normUser);
+  if (!isCorrect) {
+    isCorrect = correctAnswers.some(c => levenshtein(normUser, c) <= 2);
+  }
+
+  if (isCorrect) {
+    score++;
+    feedback.textContent = "Benar!";
+    feedback.className = "correct";
+  } else {
+    wrongList.push({
+      word: q.korea,
+      correct: Array.isArray(q.indo) ? q.indo.join(" / ") : q.indo,
+      your: answer
+    });
+    feedback.textContent = "Salah!";
+    feedback.className = "wrong";
+  }
+
+  setTimeout(() => {
+    currentIndex++;
+    nextQuestion();
+  }, 800);
+}
+
+function finishQuiz() {
+  clearInterval(timerInterval);
+  document.getElementById("questionArea").classList.add("hidden");
+  document.getElementById("resultArea").classList.remove("hidden");
+  const percent = Math.round((score / questions.length) * 100);
+  document.getElementById("scoreText").textContent = `Skor: ${score}/${questions.length} (${percent}%)`;
+  const wrongDiv = document.getElementById("wrongWords");
+  wrongDiv.innerHTML = "";
+  if (wrongList.length > 0) {
+    wrongDiv.classList.remove("hidden");
+    wrongDiv.innerHTML = "<strong>Kata yang salah:</strong><br><br>";
+    wrongList.forEach(i => {
+      wrongDiv.innerHTML += `• <strong>${i.word}</strong> → ${i.correct} <br><small style="color:#78350f;">(jawaban kamu: ${i.your})</small><br><br>`;
+    });
+  }
+
+  // Kirim data via GET (bypass CORS, data pasti masuk)
+  const params = new URLSearchParams({
+    username: username || "Anonymous",
+    kodeSoal: kodeSoal || "Unknown",
+    jenisAplikasi: "QUIZ",
+    skor: score,
+    persentase: percent,
+    catatan: wrongList.length ? JSON.stringify(wrongList) : ""
+  });
+
+  window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
+  console.log("Data sudah dikirim via GET! Cek Google Sheet sekarang.");
+}
+
+function restartQuiz() {
+  document.getElementById("resultArea").classList.add("hidden");
+  document.getElementById("questionArea").classList.remove("hidden");
+  startQuiz();
+}
+
+function backToLogin() {
+  document.getElementById("quizPage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("kodeSoal").value = "";
+  document.getElementById("errorMsg").textContent = "";
+}
+
+function levenshtein(a, b) {
+  const matrix = Array(b.length + 1).fill().map(() => Array(a.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) matrix[0][i] = i;
+  for (let j = 0; j <= b.length; j++) matrix[j][0] = j;
+  for (let j = 1; j <= b.length; j++) {
+    for (let i = 1; i <= a.length; i++) {
+      const indicator = a[i-1] === b[j-1] ? 0 : 1;
+      matrix[j][i] = Math.min(
+        matrix[j][i-1] + 1,
+        matrix[j-1][i] + 1,
+        matrix[j-1][i-1] + indicator
+      );
     }
   }
-};
-</script>
+  return matrix[b.length][a.length];
+}
 
+// Enter key submit
+document.getElementById("answerInput")?.addEventListener("keypress", e => {
+  if (e.key === "Enter") submitAnswer();
+});
+</script>
 </body>
 </html>
