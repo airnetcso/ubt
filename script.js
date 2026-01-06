@@ -5,41 +5,6 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json`;
 
-// ================= GOOGLE SHEET =================
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycby4n_2wq6NSRDcKZ5h_EK52P6unhy4hcDKg_svaaXjN5K2kPQXOEYouvEtnQVIKMhHamA/exec";
-
-function sendScoreToSheet(username, paket, score) {
-  const totalSoal = questions.length || 100;
-  const persentase = Math.round((score / totalSoal) * 100);
-
-  fetch(SPREADSHEET_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: username || "Anonymous",
-      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
-      jenisAplikasi: "UBT",
-      skor: score,
-      persentase: persentase,
-      catatan: ""
-    })
-  })
-  .then(res => res.json())
-  .then(data => console.log("Data berhasil dikirim ke Sheet:", data))
-  .catch(err => {
-    console.warn("POST gagal, fallback GET:", err);
-    const params = new URLSearchParams({
-      username: username || "Anonymous",
-      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
-      jenisAplikasi: "UBT",
-      skor: score,
-      persentase: persentase,
-      catatan: ""
-    });
-    window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
-  });
-}
-
 // ================= LOAD SOAL =================
 async function loadSoal() {
   try {
@@ -96,6 +61,7 @@ function loadQuestionPage() {
   if (q.question.includes("\n\n")) {
     const d = document.createElement("div");
     d.className = "dialog-box";
+    if (q.id === 37 || q.id === 38) d.classList.add("dialog-center");
     d.textContent = q.question.split("\n\n").slice(1).join("\n\n");
     box.appendChild(d);
   }
@@ -112,6 +78,8 @@ function loadQuestionPage() {
     audio.style.width = "100%";
     audio.style.maxWidth = "420px";
     audio.style.display = "block";
+    audio.style.margin = "0 auto";
+
     container.appendChild(audio);
     box.appendChild(container);
   }
@@ -204,6 +172,44 @@ function calculateScore() {
   return correct * 2.5;
 }
 
+// ================= KIRIM SKOR KE GOOGLE SHEET =================
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzXCl1rF-RKZGQ83W_lhIU_X-Zd95hboU8hxdHQZQRHKoEo6KMIG6Iio9ypAelsJsJD5Q/exec";
+
+function sendScoreToSheet(username, paket, score){
+  const totalSoal = 100;
+  const persentase = Math.round((score / totalSoal) * 100);
+
+  fetch(SPREADSHEET_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: "",
+      tanggal: new Date().toLocaleString('id-ID')
+    })
+  })
+  .then(res => res.json())
+  .then(data => console.log("Data berhasil dikirim ke Sheet:", data))
+  .catch(err => {
+    console.warn("POST gagal, fallback GET:", err);
+    const params = new URLSearchParams({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: "",
+      tanggal: new Date().toLocaleString('id-ID')
+    });
+    window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
+  });
+}
+
+// ================= FINISH =================
 function finish() {
   const score = calculateScore();
 
@@ -217,7 +223,7 @@ function finish() {
   });
   localStorage.setItem("results", JSON.stringify(results));
 
-  // ===== Kirim skor ke Google Sheet =====
+  // Kirim otomatis ke Google Sheet
   sendScoreToSheet(localStorage.getItem("user"), paket, score);
 
   // Bersihkan data sementara
