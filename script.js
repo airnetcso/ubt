@@ -5,7 +5,42 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json`;
 
-/* ================= LOAD SOAL ================= */
+// ================= GOOGLE SHEET =================
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycby4n_2wq6NSRDcKZ5h_EK52P6unhy4hcDKg_svaaXjN5K2kPQXOEYouvEtnQVIKMhHamA/exec";
+
+function sendScoreToSheet(username, paket, score) {
+  const totalSoal = questions.length || 100;
+  const persentase = Math.round((score / totalSoal) * 100);
+
+  fetch(SPREADSHEET_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: ""
+    })
+  })
+  .then(res => res.json())
+  .then(data => console.log("Data berhasil dikirim ke Sheet:", data))
+  .catch(err => {
+    console.warn("POST gagal, fallback GET:", err);
+    const params = new URLSearchParams({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: ""
+    });
+    window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
+  });
+}
+
+// ================= LOAD SOAL =================
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
@@ -18,7 +53,7 @@ async function loadSoal() {
   }
 }
 
-/* ================= DASHBOARD GRID ================= */
+// ================= DASHBOARD GRID =================
 function buildGrid() {
   const L = document.getElementById("listen");
   const R = document.getElementById("read");
@@ -40,7 +75,7 @@ function buildGrid() {
   });
 }
 
-/* ================= QUESTION PAGE ================= */
+// ================= QUESTION PAGE =================
 function loadQuestionPage() {
   const box = document.getElementById("questionBox");
   const ans = document.getElementById("answers");
@@ -54,21 +89,17 @@ function loadQuestionPage() {
   box.innerHTML = "";
   ans.innerHTML = "";
 
-  // Judul soal
   const h = document.createElement("h3");
   h.textContent = `${q.id}. ${q.question.split("\n\n")[0]}`;
   box.appendChild(h);
 
-  // Dialog / teks tambahan
   if (q.question.includes("\n\n")) {
     const d = document.createElement("div");
     d.className = "dialog-box";
-    if (q.id === 37 || q.id === 38) d.classList.add("dialog-center");
     d.textContent = q.question.split("\n\n").slice(1).join("\n\n");
     box.appendChild(d);
   }
 
-  // AUDIO PLAYER – HANYA PLAYER STANDAR DENGAN CONTROLS (USER KLIK ▶ SENDIRI)
   if (q.audio) {
     const container = document.createElement("div");
     container.style.margin = "25px 0";
@@ -81,13 +112,10 @@ function loadQuestionPage() {
     audio.style.width = "100%";
     audio.style.maxWidth = "420px";
     audio.style.display = "block";
-    audio.style.margin = "0 auto";
-
     container.appendChild(audio);
     box.appendChild(container);
   }
 
-  // Gambar
   if (q.image) {
     const i = document.createElement("img");
     i.src = q.image;
@@ -98,7 +126,6 @@ function loadQuestionPage() {
     box.appendChild(i);
   }
 
-  // Pilihan jawaban
   q.options.forEach((option, i) => {
     const b = document.createElement("button");
     b.textContent = i + 1;
@@ -107,8 +134,8 @@ function loadQuestionPage() {
     b.onclick = () => {
       answered[q.id] = i + 1;
       localStorage.setItem("answered", JSON.stringify(answered));
-      buildGrid(); // update grid kalau balik ke dashboard
-      loadQuestionPage(); // refresh tampilan
+      buildGrid();
+      loadQuestionPage();
     };
 
     const row = document.createElement("div");
@@ -125,7 +152,7 @@ function loadQuestionPage() {
   });
 }
 
-/* ================= NAVIGASI ================= */
+// ================= NAVIGASI =================
 function nextQuestion() {
   if (currentIndex + 1 < questions.length) {
     localStorage.setItem("current", questions[currentIndex + 1].id);
@@ -145,7 +172,7 @@ function back() {
   location.href = "dashboard.html";
 }
 
-/* ================= TIMER ================= */
+// ================= TIMER =================
 let time = Number(localStorage.getItem("time")) || 50 * 60;
 setInterval(() => {
   if (time <= 0) {
@@ -162,7 +189,7 @@ setInterval(() => {
   }
 }, 1000);
 
-/* ================= SUBMIT ================= */
+// ================= SUBMIT =================
 function manualSubmit() {
   if (confirm("Yakin ingin submit sekarang?")) {
     finish();
@@ -190,6 +217,9 @@ function finish() {
   });
   localStorage.setItem("results", JSON.stringify(results));
 
+  // ===== Kirim skor ke Google Sheet =====
+  sendScoreToSheet(localStorage.getItem("user"), paket, score);
+
   // Bersihkan data sementara
   localStorage.removeItem("login");
   localStorage.removeItem("user");
@@ -202,17 +232,10 @@ function finish() {
   location.href = "index.html";
 }
 
-/* ================= INIT ================= */
+// ================= INIT =================
 window.onload = async () => {
   await loadSoal();
 
-  // Dashboard
-  if (document.getElementById("listen")) {
-    buildGrid();
-  }
-
-  // Halaman soal
-  if (document.getElementById("questionBox")) {
-    loadQuestionPage();
-  }
+  if (document.getElementById("listen")) buildGrid();
+  if (document.getElementById("questionBox")) loadQuestionPage();
 };
