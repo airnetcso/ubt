@@ -7,45 +7,58 @@ const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
 
+// === FUNGSI KIRIM HASIL UBT - VERSI FIX (HANYA 1 BARIS) ===
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 KIRIM SKOR KE SHEET - FINAL VERSION (FORMDATA + BEACON)");
-  console.log("Username:", username, "| Paket:", paket, "| Skor:", score);
+  console.log("🔥 KIRIM SKOR UBT KE SHEET - VERSI FIX (1 BARIS SAJA)");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
   const persentase = Math.round((score / maxScore) * 100);
 
-  const formData = new FormData();
-  formData.append("username", username || "Anonymous");
-  formData.append("kodeSoal", "TRYOUT " + ("0" + paket).slice(-2));
-  formData.append("jenisAplikasi", "UBT");
-  formData.append("skor", score);
-  formData.append("persentase", persentase);
-  formData.append("catatan", "");
+  // ANTI DUPLICATE: Cek apakah sudah pernah kirim skor ini
+  const key = "ubt_sent_" + username + "_paket" + paket + "_skor" + score;
+  if (localStorage.getItem(key) === "sent") {
+    console.log("✅ Skor UBT ini sudah pernah dikirim sebelumnya. Skip duplicate.");
+    return; // stop, tidak kirim lagi
+  }
 
-  // POST FormData – paling kompatibel dengan Apps Script
+  // Tandai sudah kirim
+  localStorage.setItem(key, "sent");
+
+  // Kirim pakai JSON (sama persis seperti latbakor & koka → pasti masuk benar)
   fetch(SPREADSHEET_URL, {
     method: "POST",
-    mode: "no-cors",
-    body: formData
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: score >= 80 ? "Lulus" : "Belum lulus"
+    })
   })
-  .then(() => console.log("✅ BERHASIL KIRIM VIA POST FORMDATA!"))
-  .catch(() => console.log("ℹ️ POST blocked (normal), lanjut beacon"));
-
-  // Beacon fallback (pasti sampai)
-  const params = new URLSearchParams();
-  for (const [key, value] of formData.entries()) {
-    params.append(key, value);
-  }
-  const beaconUrl = SPREADSHEET_URL + "?" + params.toString() + "&t=" + Date.now();
-  const beacon = new Image();
-  beacon.src = beaconUrl;
-  beacon.onload = () => console.log("✅ BEACON BERHASIL! Skor pasti masuk sheet");
-  beacon.onerror = () => console.log("⚠️ Beacon error (tapi biasanya tetap masuk)");
-
-  console.log("📤 Data terkirim ganda (POST + Beacon) – aman bro!");
+  .then(() => {
+    console.log("✅ BERHASIL kirim skor UBT ke Google Sheet (hanya 1 baris)");
+  })
+  .catch(err => {
+    console.warn("⚠️ Gagal POST UBT, coba fallback GET", err);
+    // Fallback GET kalau POST gagal
+    const params = new URLSearchParams({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: score >= 80 ? "Lulus" : "Belum lulus"
+    });
+    const img = new Image();
+    img.src = SPREADSHEET_URL + "?" + params.toString() + "&t=" + Date.now();
+    console.log("📤 Fallback GET dikirim via beacon");
+  });
 }
 
+// === FUNGSI LOAD SOAL (TETAP SAMA) ===
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
@@ -63,6 +76,7 @@ async function loadSoal() {
   }
 }
 
+// === SEMUA FUNGSI LAIN TETAP SAMA PERSIS ===
 function buildGrid() {
   const L = document.getElementById("listen");
   const R = document.getElementById("read");
@@ -183,6 +197,7 @@ function finish() {
   results.push({ name: user, paket, score, time: document.getElementById("timerBox")?.innerText || "00:00", date: new Date().toLocaleString("id-ID") });
   localStorage.setItem("results", JSON.stringify(results));
 
+  // KIRIM HASIL PAKAI FUNGSI BARU (HANYA 1 BARIS)
   sendScoreToSheet(user, paket, score);
 
   localStorage.clear();
