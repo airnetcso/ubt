@@ -34,10 +34,9 @@ button:hover{ background:#1e40af; }
 </div>
 
 <script>
-// URL Google Sheet PERSIS SAMA dengan /koka (yang sudah terbukti nerima data QUIZ)
+// URL Google Sheet PERSIS /koka
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
 
-// Daftar user sama persis dengan /koka
 const users = [
   {username:"uus",password:"123"},
   {username:"hanarizka",password:"Nungkihana24!"},
@@ -91,14 +90,14 @@ function login(){
   }
 }
 
-// === Kirim skor PERSIS SAMA dengan /koka (sudah terbukti masuk sheet) ===
+// Kirim skor ke Sheet persis /koka
 function sendScoreToSheet(username, paket, score){
-  const totalSoal = 100; // Ubah kalau jumlah soal UBT bukan 100
+  const totalSoal = 100;
   const persentase = Math.round((score / totalSoal) * 100);
-
+  
   fetch(SPREADSHEET_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
     body: JSON.stringify({
       username: username || "Anonymous",
       kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
@@ -107,13 +106,9 @@ function sendScoreToSheet(username, paket, score){
       persentase: persentase,
       catatan: ""
     })
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log("Data berhasil dikirim ke Sheet:", data);
-    alert("✅ Skor berhasil dikirim ke Google Sheet!");
-  })
-  .catch(err => {
+  }).then(r=>r.json())
+  .then(d=>console.log("Data dikirim:",d))
+  .catch(err=>{
     console.warn("POST gagal, fallback GET:", err);
     const params = new URLSearchParams({
       username: username || "Anonymous",
@@ -123,12 +118,11 @@ function sendScoreToSheet(username, paket, score){
       persentase: persentase,
       catatan: ""
     });
-    window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
-    alert("⚠️ POST gagal, tapi data dikirim via GET fallback.");
+    window.open(SPREADSHEET_URL+"?"+params.toString(), "_blank");
   });
 }
 
-// === Override localStorage untuk kirim otomatis ===
+// Override localStorage untuk kirim otomatis saat quiz selesai
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function(key, value){
   originalSetItem.apply(this, arguments);
@@ -136,12 +130,10 @@ localStorage.setItem = function(key, value){
     try{
       const allResults = JSON.parse(value);
       const latest = allResults[allResults.length-1];
-      if(latest && latest.name && latest.score !== undefined && latest.paket){
+      if(latest && latest.name && latest.score!==undefined && latest.paket){
         sendScoreToSheet(latest.name, latest.paket, latest.score);
       }
-    }catch(e){
-      console.error("Error sync skor otomatis:", e);
-    }
+    }catch(e){ console.error("Error sync skor otomatis:", e); }
   }
 };
 </script>
