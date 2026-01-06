@@ -34,83 +34,107 @@ button:hover{ background:#1e40af; }
 </div>
 
 <script>
-// URL Google Sheet /koka
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycby4n_2wq6NSRDcKZ5h_EK52P6unhy4hcDKg_svaaXjN5K2kPQXOEYouvEtnQVIKMhHamA/exec";
+// URL Google Sheet yang sama dengan /koka
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
+
+// Daftar user diambil dari /koka (sudah update semua)
+const users = [
+  {username:"uus",password:"123"},
+  {username:"hanarizka",password:"Nungkihana24!"},
+  {username:"Heri",password:"heri99"},
+  {username:"siswa01",password:"12345"},
+  {username:"windi",password:"Windi2000"},
+  {username:"rismaya97",password:"bahasakorea"},
+  {username:"wantikas",password:"200022",role:"admin"},
+  {username:"Fikrisurya",password:"464646"},
+  {username:"Mutiara2003",password:"Mutiara14"},
+  {username:"sita77",password:"minyooki"},
+  {username:"Aini185",password:"Doraemon"},
+  {username:"Hangeulfei",password:"studykorea02"},
+  {username:"Hamdan106",password:"Fukuo106"},
+  {username:"admin",password:"admin123",role:"admin"}
+];
 
 function checkStorage(){
   try{ localStorage.setItem("test","ok"); localStorage.removeItem("test"); return true; }catch(e){ return false; }
 }
 
-const users = [
-  {username:"siswa01",password:"12345",role:"user"},
-  {username:"windi",password:"Windi2000",role:"user"},
-  {username:"rismaya97",password:"bahasakorea",role:"user"},
-  {username:"sita77",password:"minyooki",role:"user"},
-  {username:"Aini185",password:"Doraemon",role:"user"},
-  {username:"Hangeulfei",password:"studykorea02",role:"user"},
-  {username:"Hamdan106",password:"Fukuo106",role:"user"},
-  {username:"Heri",password:"heri99",role:"user"},
-  {username:"admin",password:"admin123",role:"admin"}
-];
-
 function login(){
   const err = document.getElementById("error-msg");
   err.innerText = "";
   if(!checkStorage()){ err.innerText = "Browser memblokir localStorage. Gunakan mode normal."; return; }
-
+  
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
   const paket = document.getElementById("paket").value;
+  
   const user = users.find(x => x.username === u && x.password === p);
-
   if(!user){ err.innerText = "Username atau password salah!"; return; }
-
+  
+  // Cek syarat lulus paket sebelumnya (minimal 80)
   if(Number(paket) > 1){
     const results = JSON.parse(localStorage.getItem("results") || "[]");
     const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket) - 1);
-    if(!prev || Number(prev.score) < 80){ err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; return; }
+    if(!prev || Number(prev.score) < 80){ 
+      err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; 
+      return; 
+    }
   }
-
+  
   localStorage.setItem("login","true");
   localStorage.setItem("user",u);
   localStorage.setItem("paket",paket);
-
-  if(user.role === "admin") location.href = "https://airnetcso.github.io/admin/";
-  else location.href = "dashboard.html";
+  
+  if(user.role === "admin") {
+    location.href = "https://airnetcso.github.io/admin/";
+  } else {
+    location.href = "dashboard.html";
+  }
 }
 
-// === Fungsi kirim skor ke Google Sheet /koka ===
+// === Fungsi kirim skor ke Google Sheet (format sama dengan /koka) ===
 function sendScoreToSheet(username, paket, score){
+  const totalSoal = 100; // Sesuaikan jika jumlah soal UBT bukan 100
+  const persentase = Math.round((score / totalSoal) * 100);
+
   const data = {
-    username: username,
-    kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+    username: username || "Anonymous",
+    kodeSoal: "TRYOUT " + ("0"+paket).slice(-2), // TRYOUT 01, 02, 03
     jenisAplikasi: "UBT",
     skor: score,
-    persentase: Math.round(score), // bisa disesuaikan
-    catatan: "" // bisa dikosongkan atau diisi data tambahan
+    persentase: persentase,
+    catatan: ""
   };
+
   fetch(SPREADSHEET_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   })
   .then(r => r.json())
-  .then(res => console.log("Skor berhasil dikirim:", res))
-  .catch(e => console.error("⚠️ Gagal mengirim skor ke Google Sheet. Cek console.", e));
+  .then(res => console.log("Skor UBT berhasil dikirim:", res))
+  .catch(e => {
+    console.error("Gagal kirim skor UBT:", e);
+    // Fallback GET jika POST gagal
+    const params = new URLSearchParams(data);
+    window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
+  });
 }
 
-// === Override localStorage.setItem untuk kirim skor otomatis ===
+// === Override localStorage untuk kirim skor otomatis saat results disimpan ===
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function(key, value){
   originalSetItem.apply(this, arguments);
-  if(key === "results"){ // setiap kali quiz selesai simpan results
+  if(key === "results"){
     try{
       const allResults = JSON.parse(value);
       const latest = allResults[allResults.length-1];
-      if(latest && latest.name && latest.score !== undefined){
+      if(latest && latest.name && latest.score !== undefined && latest.paket){
         sendScoreToSheet(latest.name, latest.paket, latest.score);
       }
-    }catch(e){ console.error("Error sync skor otomatis:", e); }
+    }catch(e){
+      console.error("Error sync skor otomatis UBT:", e);
+    }
   }
 };
 </script>
