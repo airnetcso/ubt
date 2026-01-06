@@ -37,7 +37,7 @@ button:hover{ background:#1e40af; }
 // URL Google Sheet sama dengan /koka
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
 
-// Daftar user sama persis seperti /koka
+// Daftar user update dari /koka
 const users = [
   {username:"uus",password:"123"},
   {username:"hanarizka",password:"Nungkihana24!"},
@@ -91,14 +91,14 @@ function login(){
   }
 }
 
-// === PERUBAHAN HANYA DI SINI: tambah field "name" sebagai prioritas ===
+// === Kirim skor dengan field name + username (kompatibel maksimal) ===
 function sendScoreToSheet(username, paket, score){
-  const totalSoal = 100; // Ubah kalau jumlah soal bukan 100
+  const totalSoal = 100; // Ubah jadi jumlah soal sebenarnya kalau beda
   const persentase = Math.round((score / totalSoal) * 100);
 
   const data = {
-    name: username,                  // ← Utama, biar cocok script lama
-    username: username,              // ← Backup, biar cocok script /koka
+    name: username,          // Prioritas utama
+    username: username,      // Backup
     kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
     jenisAplikasi: "UBT",
     skor: score,
@@ -113,16 +113,18 @@ function sendScoreToSheet(username, paket, score){
   })
   .then(r => r.json())
   .then(res => {
-    console.log("Skor UBT berhasil dikirim ke Sheet:", res);
+    console.log("Skor UBT berhasil dikirim:", res);
+    alert("Skor UBT berhasil dikirim ke Google Sheet!");  // Tambah alert biar kelihatan langsung
   })
   .catch(e => {
-    console.error("Gagal kirim POST, fallback GET:", e);
+    console.error("Gagal POST:", e);
+    alert("Gagal kirim skor, coba cek internet/console.");
+    // Fallback GET
     const params = new URLSearchParams(data);
     window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
   });
 }
 
-// Override localStorage tetap sama
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function(key, value){
   originalSetItem.apply(this, arguments);
@@ -134,7 +136,7 @@ localStorage.setItem = function(key, value){
         sendScoreToSheet(latest.name, latest.paket, latest.score);
       }
     }catch(e){
-      console.error("Error sync skor:", e);
+      console.error("Error sync:", e);
     }
   }
 };
