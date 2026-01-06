@@ -34,10 +34,10 @@ button:hover{ background:#1e40af; }
 </div>
 
 <script>
-// URL Google Sheet sama dengan /koka
+// URL Google Sheet PERSIS SAMA dengan /koka (yang sudah terbukti nerima data QUIZ)
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
 
-// Daftar user update dari /koka
+// Daftar user sama persis dengan /koka
 const users = [
   {username:"uus",password:"123"},
   {username:"hanarizka",password:"Nungkihana24!"},
@@ -51,7 +51,7 @@ const users = [
   {username:"sita77",password:"minyooki"},
   {username:"Aini185",password:"Doraemon"},
   {username:"Hangeulfei",password:"studykorea02"},
-  {username:"Hamdan106",password:"Fukuo106"},
+  {username:"Hamdan186",password:"Fukuo106"},
   {username:"admin",password:"admin123",role:"admin"}
 ];
 
@@ -91,40 +91,44 @@ function login(){
   }
 }
 
-// === Kirim skor dengan field name + username (kompatibel maksimal) ===
+// === Kirim skor PERSIS SAMA dengan /koka (sudah terbukti masuk sheet) ===
 function sendScoreToSheet(username, paket, score){
-  const totalSoal = 100; // Ubah jadi jumlah soal sebenarnya kalau beda
+  const totalSoal = 100; // Ubah kalau jumlah soal UBT bukan 100
   const persentase = Math.round((score / totalSoal) * 100);
-
-  const data = {
-    name: username,          // Prioritas utama
-    username: username,      // Backup
-    kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
-    jenisAplikasi: "UBT",
-    skor: score,
-    persentase: persentase,
-    catatan: ""
-  };
 
   fetch(SPREADSHEET_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: ""
+    })
   })
-  .then(r => r.json())
-  .then(res => {
-    console.log("Skor UBT berhasil dikirim:", res);
-    alert("Skor UBT berhasil dikirim ke Google Sheet!");  // Tambah alert biar kelihatan langsung
+  .then(res => res.json())
+  .then(data => {
+    console.log("Data berhasil dikirim ke Sheet:", data);
+    alert("✅ Skor berhasil dikirim ke Google Sheet!");
   })
-  .catch(e => {
-    console.error("Gagal POST:", e);
-    alert("Gagal kirim skor, coba cek internet/console.");
-    // Fallback GET
-    const params = new URLSearchParams(data);
+  .catch(err => {
+    console.warn("POST gagal, fallback GET:", err);
+    const params = new URLSearchParams({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: ""
+    });
     window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
+    alert("⚠️ POST gagal, tapi data dikirim via GET fallback.");
   });
 }
 
+// === Override localStorage untuk kirim otomatis ===
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function(key, value){
   originalSetItem.apply(this, arguments);
@@ -136,7 +140,7 @@ localStorage.setItem = function(key, value){
         sendScoreToSheet(latest.name, latest.paket, latest.score);
       }
     }catch(e){
-      console.error("Error sync:", e);
+      console.error("Error sync skor otomatis:", e);
     }
   }
 };
