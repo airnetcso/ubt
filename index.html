@@ -40,6 +40,7 @@ const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycby4n_2wq6NSRDcK
 function checkStorage(){
   try{ localStorage.setItem("test","ok"); localStorage.removeItem("test"); return true; }catch(e){ return false; }
 }
+
 const users = [
   {username:"siswa01",password:"12345",role:"user"},
   {username:"windi",password:"Windi2000",role:"user"},
@@ -56,25 +57,37 @@ function login(){
   const err = document.getElementById("error-msg");
   err.innerText = "";
   if(!checkStorage()){ err.innerText = "Browser memblokir localStorage. Gunakan mode normal."; return; }
+
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
   const paket = document.getElementById("paket").value;
   const user = users.find(x => x.username === u && x.password === p);
+
   if(!user){ err.innerText = "Username atau password salah!"; return; }
+
   if(Number(paket) > 1){
     const results = JSON.parse(localStorage.getItem("results") || "[]");
     const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket) - 1);
     if(!prev || Number(prev.score) < 80){ err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; return; }
   }
+
   localStorage.setItem("login","true");
   localStorage.setItem("user",u);
   localStorage.setItem("paket",paket);
-  if (user.role === "admin") location.href = "https://airnetcso.github.io/admin/";
+
+  if(user.role === "admin") location.href = "https://airnetcso.github.io/admin/";
   else location.href = "dashboard.html";
 }
 
-// === Fungsi tambahan untuk kirim skor ke Google Sheet ===
-function sendScoreToSheet(data){
+// === Fungsi kirim skor ke Google Sheet /koka ===
+function sendScoreToSheet(username, paket, score){
+  const data = {
+    username: username,
+    kode: "TRYOUT " + ("0"+paket).slice(-2),
+    nilai: score,
+    tanggal: new Date().toLocaleString('id-ID'),
+    app: "ubt"
+  };
   fetch(SPREADSHEET_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -85,16 +98,12 @@ function sendScoreToSheet(data){
   .catch(e => console.error("⚠️ Gagal mengirim skor ke Google Sheet. Cek console.", e));
 }
 
-// Contoh penggunaan: panggil saat quiz selesai
-// Misal di file dashboard.html, setelah user submit quiz:
-// const centralizedData = {
-//    username: "siswa01",
-//    kode: "TRYOUT 01",
-//    nilai: 95,
-//    tanggal: new Date().toLocaleString('id-ID'),
-//    app: "ubt"
-// };
-// sendScoreToSheet(centralizedData);
+// === Contoh pemanggilan saat quiz selesai ===
+// Di file dashboard.html / quiz JS:
+// let username = localStorage.getItem("user");
+// let paket = localStorage.getItem("paket");
+// let score = 95; // nilai hasil quiz
+// sendScoreToSheet(username, paket, score);
 
 </script>
 </body>
