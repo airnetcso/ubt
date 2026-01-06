@@ -5,42 +5,10 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json`;
 
-// ================= GOOGLE SHEET =================
+// URL Google Sheet sama persis dengan /koka
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
 
-function sendScoreToSheet(username, paket, score) {
-  const totalSoal = 100; // sesuaikan dengan jumlah soal
-  const persentase = Math.round((score / totalSoal) * 100);
-
-  fetch(SPREADSHEET_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: username || "Anonymous",
-      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
-      jenisAplikasi: "UBT",
-      skor: score,
-      persentase: persentase,
-      catatan: ""
-    })
-  })
-  .then(res => res.json())
-  .then(data => console.log("Data berhasil dikirim ke Sheet:", data))
-  .catch(err => {
-    console.warn("POST gagal, fallback GET:", err);
-    const params = new URLSearchParams({
-      username: username || "Anonymous",
-      kodeSoal: "TRYOUT " + ("0" + paket).slice(-2),
-      jenisAplikasi: "UBT",
-      skor: score,
-      persentase: persentase,
-      catatan: ""
-    });
-    window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
-  });
-}
-
-// ================= LOAD SOAL =================
+/* ================= LOAD SOAL ================= */
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
@@ -53,7 +21,7 @@ async function loadSoal() {
   }
 }
 
-// ================= DASHBOARD GRID =================
+/* ================= DASHBOARD GRID ================= */
 function buildGrid() {
   const L = document.getElementById("listen");
   const R = document.getElementById("read");
@@ -75,7 +43,7 @@ function buildGrid() {
   });
 }
 
-// ================= QUESTION PAGE =================
+/* ================= QUESTION PAGE ================= */
 function loadQuestionPage() {
   const box = document.getElementById("questionBox");
   const ans = document.getElementById("answers");
@@ -103,7 +71,7 @@ function loadQuestionPage() {
     box.appendChild(d);
   }
 
-  // Audio
+  // AUDIO PLAYER
   if (q.audio) {
     const container = document.createElement("div");
     container.style.margin = "25px 0";
@@ -160,7 +128,7 @@ function loadQuestionPage() {
   });
 }
 
-// ================= NAVIGASI =================
+/* ================= NAVIGASI ================= */
 function nextQuestion() {
   if (currentIndex + 1 < questions.length) {
     localStorage.setItem("current", questions[currentIndex + 1].id);
@@ -180,10 +148,13 @@ function back() {
   location.href = "dashboard.html";
 }
 
-// ================= TIMER =================
+/* ================= TIMER ================= */
 let time = Number(localStorage.getItem("time")) || 50 * 60;
 setInterval(() => {
-  if (time <= 0) { finish(); return; }
+  if (time <= 0) {
+    finish();
+    return;
+  }
   time--;
   localStorage.setItem("time", time);
   const t = document.getElementById("timerBox");
@@ -194,27 +165,63 @@ setInterval(() => {
   }
 }, 1000);
 
-// ================= SUBMIT =================
+/* ================= SUBMIT ================= */
 function manualSubmit() {
-  if (confirm("Yakin ingin submit sekarang?")) finish();
+  if (confirm("Yakin ingin submit sekarang?")) {
+    finish();
+  }
 }
 
+// Menghitung skor sesuai format /koka
 function calculateScore() {
   let correct = 0;
   questions.forEach(q => {
+    // q.answer harus angka (1–4), answered[q.id] juga angka
     if (answered[q.id] === q.answer) correct++;
   });
-  return correct * 2.5;
+  return correct * 2.5; // Total 100 jika 40 soal
 }
 
+/* ================= KIRIM SKOR KE GOOGLE SHEET /koka ================= */
+function sendScoreToSheet(username, paket, score){
+  const totalSoal = questions.length || 40;
+  const persentase = Math.round((score / (totalSoal*2.5))*100);
+
+  fetch(SPREADSHEET_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: ""
+    })
+  })
+  .then(r=>r.json())
+  .then(data=>console.log("Data berhasil dikirim ke Sheet:", data))
+  .catch(err=>{
+    console.warn("POST gagal, fallback GET:", err);
+    const params = new URLSearchParams({
+      username: username || "Anonymous",
+      kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+      jenisAplikasi: "UBT",
+      skor: score,
+      persentase: persentase,
+      catatan: ""
+    });
+    window.open(SPREADSHEET_URL + "?" + params.toString(), "_blank");
+  });
+}
+
+/* ================= FINISH ================= */
 function finish() {
   const score = calculateScore();
 
   const results = JSON.parse(localStorage.getItem("results") || "[]");
-  const user = localStorage.getItem("user");
-
   results.push({
-    name: user,
+    name: localStorage.getItem("user"),
     paket: paket,
     score: score,
     time: document.getElementById("timerBox")?.innerText || "00:00",
@@ -222,10 +229,10 @@ function finish() {
   });
   localStorage.setItem("results", JSON.stringify(results));
 
-  // Kirim ke Google Sheet
-  sendScoreToSheet(user, paket, score);
+  // Kirim otomatis ke Google Sheet /koka
+  sendScoreToSheet(localStorage.getItem("user"), paket, score);
 
-  // Bersihkan session
+  // Bersihkan sementara
   localStorage.removeItem("login");
   localStorage.removeItem("user");
   localStorage.removeItem("paket");
@@ -237,26 +244,15 @@ function finish() {
   location.href = "index.html";
 }
 
-// ================= OVERRIDE LOCALSTORAGE RESULTS =================
-const originalSetItem = localStorage.setItem;
-localStorage.setItem = function(key, value){
-  originalSetItem.apply(this, arguments);
-  if(key === "results"){
-    try{
-      const allResults = JSON.parse(value);
-      const latest = allResults[allResults.length-1];
-      if(latest && latest.name && latest.score !== undefined && latest.paket){
-        sendScoreToSheet(latest.name, latest.paket, latest.score);
-      }
-    }catch(e){
-      console.error("Error sync skor otomatis:", e);
-    }
-  }
-};
-
-// ================= INIT =================
+/* ================= INIT ================= */
 window.onload = async () => {
   await loadSoal();
-  if (document.getElementById("listen")) buildGrid();
-  if (document.getElementById("questionBox")) loadQuestionPage();
+
+  if(document.getElementById("listen")){
+    buildGrid();
+  }
+
+  if(document.getElementById("questionBox")){
+    loadQuestionPage();
+  }
 };
