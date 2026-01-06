@@ -5,10 +5,13 @@
 <title>Soal</title>
 <link rel="stylesheet" href="style.css">
 </head>
-<script>
-if(localStorage.getItem("login")!=="true"){location.href="index.html";}
-</script>
 <body>
+<script>
+if(localStorage.getItem("login") !== "true" || !localStorage.getItem("user")){
+  location.href = "index.html";
+}
+</script>
+
 <div class="question-page">
   <div class="col-left" id="answers"></div>
   <div class="col-right" id="questionBox"></div>
