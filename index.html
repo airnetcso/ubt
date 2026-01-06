@@ -34,10 +34,8 @@ button:hover{ background:#1e40af; }
 </div>
 
 <script>
-// URL Google Sheet persis /koka
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycby4n_2wq6NSRDcKZ5h_EK52P6unhy4hcDKg_svaaXjN5K2kPQXOEYouvEtnQVIKMhHamA/exec";
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzXCl1rF-RKZGQ83W_lhIU_X-Zd95hboU8hxdHQZQRHKoEo6KMIG6Iio9ypAelsJsJD5Q/exec";
 
-// Daftar user sama persis /koka
 const users = [
   {username:"uus",password:"123"},
   {username:"hanarizka",password:"Nungkihana24!"},
@@ -73,7 +71,7 @@ function login(){
   
   if(Number(paket) > 1){
     const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket)-1);
+    const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket) - 1);
     if(!prev || Number(prev.score) < 80){ 
       err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; 
       return; 
@@ -84,8 +82,11 @@ function login(){
   localStorage.setItem("user",u);
   localStorage.setItem("paket",paket);
   
-  if(user.role === "admin") location.href = "https://airnetcso.github.io/admin/";
-  else location.href = "dashboard.html";
+  if(user.role === "admin") {
+    location.href = "https://airnetcso.github.io/admin/";
+  } else {
+    location.href = "dashboard.html";
+  }
 }
 </script>
 </body>
