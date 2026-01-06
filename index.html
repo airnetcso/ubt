@@ -79,14 +79,15 @@ function login(){
   else location.href = "dashboard.html";
 }
 
-// === Fungsi kirim skor ke Google Sheet ===
+// === Fungsi kirim skor ke Google Sheet /koka ===
 function sendScoreToSheet(username, paket, score){
   const data = {
     username: username,
-    kode: "TRYOUT " + ("0"+paket).slice(-2),
-    nilai: score,
-    tanggal: new Date().toLocaleString('id-ID'),
-    app: "ubt"
+    kodeSoal: "TRYOUT " + ("0"+paket).slice(-2),
+    jenisAplikasi: "UBT",
+    skor: score,
+    persentase: Math.round(score), // bisa disesuaikan
+    catatan: "" // bisa dikosongkan atau diisi data tambahan
   };
   fetch(SPREADSHEET_URL, {
     method: "POST",
@@ -98,11 +99,11 @@ function sendScoreToSheet(username, paket, score){
   .catch(e => console.error("⚠️ Gagal mengirim skor ke Google Sheet. Cek console.", e));
 }
 
-// === OVERRIDE localStorage.setItem untuk kirim skor otomatis ===
+// === Override localStorage.setItem untuk kirim skor otomatis ===
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function(key, value){
   originalSetItem.apply(this, arguments);
-  if(key === "results"){
+  if(key === "results"){ // setiap kali quiz selesai simpan results
     try{
       const allResults = JSON.parse(value);
       const latest = allResults[allResults.length-1];
