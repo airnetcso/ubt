@@ -7,14 +7,13 @@
 </head>
 <script>
 if(localStorage.getItem("login")!=="true"){location.href="index.html";}
+document.getElementById("user") && (document.getElementById("user").innerText = localStorage.getItem("user") + " - TRYOUT " + localStorage.getItem("paket"));
 </script>
 <body>
 <header class="header">
-  <div style="text-align:left"><button id="submitBtn" class="box" onclick="manualSubmit()">SUBMIT</button></div>
-  <div id="user"></div>
-  <div class="top-right">
-    <div id="timerBox" class="box">50:00</div>
-  </div>
+  <div><button id="submitBtn" class="box" onclick="manualSubmit()">SUBMIT</button></div>
+  <div id="user" style="font-weight:bold;color:#fff"></div>
+  <div class="top-right"><div id="timerBox" class="box">50:00</div></div>
 </header>
 
 <div class="content two-col">
@@ -23,14 +22,14 @@ if(localStorage.getItem("login")!=="true"){location.href="index.html";}
     <div class="grid" id="listen"></div>
   </div>
   <div class="col">
-    <div style="text-align:center"><div class="section-box reading">SOAL MEMBACA / 읽기문제</div>
+    <div style="text-align:center"><div class="section-box reading">SOAL MEMBACA / 읽기문제</div></div>
     <div class="grid" id="read"></div>
   </div>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=7"></script> <!-- CACHE KILLER -->
 <script>
-document.getElementById("user").innerText=localStorage.getItem("user");
+document.getElementById("user").innerText = localStorage.getItem("user") + " - TRYOUT " + localStorage.getItem("paket");
 </script>
 </body>
 </html>
