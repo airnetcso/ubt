@@ -16,45 +16,50 @@
   url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat; 
  }
 
- /* ANIMASI MASUK */
  @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(50px); }
   to { opacity: 1; transform: translateY(0); }
  }
 
- /* BOX LOGIN LEBIH BESAR & ANIMATED */
  .login-box{ 
-  width: 380px;                  /* dari 340px jadi 380px → lebih lega */
-  max-width: 90%;                /* tetap responsif di HP */
+  width: 380px;
+  max-width: 90%;
   background:rgba(255,255,255,.28); 
-  padding: 45px 35px;            /* padding lebih besar, lebih nyaman */
+  padding: 35px 35px;               /* dikurangi dari 45px jadi 35px → lebih pendek */
   text-align:center; 
-  backdrop-filter:blur(10px);    /* blur lebih halus */
-  border-radius:16px;            /* sudut lebih lembut */
+  backdrop-filter:blur(10px);
+  border-radius:16px;
   box-shadow:0 12px 40px rgba(0,0,0,.3); 
-  animation: fadeSlideUp 0.8s ease-out forwards; /* animasi masuk keren */
+  animation: fadeSlideUp 0.8s ease-out forwards;
  }
 
  .login-box h2{ 
-  margin-bottom:24px; 
+  margin-bottom:20px;               /* dikurangi sedikit biar lebih rapat */
   color:#fff; 
-  font-size:28px;                /* judul lebih besar */
+  font-size:28px;
   font-weight:bold;
   text-shadow: 0 2px 6px rgba(0,0,0,0.5);
  }
 
  input, select, button{ 
   width:100%; 
-  padding:14px;                  /* input lebih tinggi */
-  margin-bottom:16px; 
+  padding:14px;
+  margin-bottom:14px;               /* jarak antar elemen sedikit dikurangi */
   font-size:15px; 
   border-radius:10px; 
   border:none; 
   outline:none; 
  }
+
+ /* PLACEHOLDER LEBIH TRANSPARAN */
+ input::placeholder, select option[disabled] {
+  color: rgba(255,255,255,0.55);    /* dari 0.7 jadi 0.55 → lebih soft */
+  opacity: 1;
+ }
+
  input:focus, select:focus{ 
   box-shadow:0 0 0 3px rgba(96,165,250,0.5); 
-  transform: scale(1.02);        /* efek zoom kecil saat fokus */
+  transform: scale(1.02);
   transition: all 0.3s;
  }
 
@@ -65,6 +70,7 @@
   font-weight:bold; 
   font-size:16px;
   transition: all 0.3s;
+  margin-bottom:0;
  }
  button:hover{ 
   background:#1e40af; 
@@ -75,7 +81,7 @@
  #error-msg{ 
   color:#ff4444; 
   font-weight:bold; 
-  margin-top:12px; 
+  margin-top:10px; 
   font-size:14px; 
   min-height:24px; 
  }
@@ -98,6 +104,7 @@
  <input id="username" placeholder="Username / 이름" autofocus>
  <input id="password" type="password" placeholder="Password / 비밀번호">
  <select id="paket">
+ <option value="" disabled selected>Pilih Paket Tryout</option>
  <option value="1">TRYOUT 01</option>
  <option value="2">TRYOUT 02</option>
  <option value="3">TRYOUT 03</option>
@@ -147,7 +154,7 @@
  const p = document.getElementById("password").value.trim();
  const paket = document.getElementById("paket").value;
  
- if (!u || !p) { err.innerText = "Username & password wajib diisi!"; return; }
+ if (!u || !p || !paket) { err.innerText = "Semua kolom wajib diisi!"; return; }
 
  const user = users.find(x => x.username === u && x.password === p);
  if(!user){ err.innerText = "Username atau password salah!"; return; }
