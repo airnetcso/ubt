@@ -5,12 +5,13 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-// URL Google Sheet yang SAMA dengan /koka dan /latbakor
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzwdfNflhqIyVWo8knAyB2nWtzlkbPiRHfMCJV_O_mxkZravDprrAhMNV3Qu75WFYgk0g/exec";
+// URL Google Sheet (pakai yang sesuai dengan app UBT kamu, kalau beda ganti di sini)
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
+// ^^^ Kalau kamu pakai yang lama (AKfycbzw...), ganti sesuai GAS yang benar untuk UBT
 
-// FUNGSI KIRIM SKOR UBT KE KOLOM UBT DI SHEET UTAMA
+// FUNGSI KIRIM SKOR UBT KE KOLOM UBT DI SHEET UTAMA (FIXED VERSION)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 Mengirim skor UBT ke Google Sheet (kolom UBT)");
+  console.log("🔥 Mengirim skor UBT ke Google Sheet (kolom UBT) - versi form-urlencoded");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
@@ -29,26 +30,32 @@ function sendScoreToSheet(username, paket, score) {
     namaSiswa: username || "Anonymous",
     code: "UBT TRYOUT " + paket,
     kosaKata: "-",
-    ubt: `${score}/${maxScore} (${persentase}%)`,   // ← MASUK KE KOLOM UBT
+    ubt: `${score}/${maxScore} (${persentase}%)`, // ← MASUK KE KOLOM UBT
     latihanSoal: "-",
     keterangan: score >= 80 ? "Lulus UBT Paket " + paket : "Belum lulus UBT (skor < 80)"
   };
 
+  const formData = new URLSearchParams(dataToSend);
+
   fetch(SPREADSHEET_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(dataToSend)
+    body: formData,
+    redirect: "follow"
   })
-  .then(() => console.log("✅ Skor UBT berhasil dikirim ke sheet"))
+  .then(res => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    console.log("✅ Skor UBT berhasil dikirim ke sheet");
+  })
   .catch(err => {
-    console.warn("⚠️ Gagal POST, coba fallback GET", err);
-    const params = new URLSearchParams(dataToSend);
-    const img = new Image();
-    img.src = SPREADSHEET_URL + "?" + params.toString() + "&t=" + Date.now();
+    console.error("⚠️ Gagal kirim ke sheet:", err);
+    // Optional: kasih tahu user kalau gagal
+    // alert("Gagal kirim ke server. Nilai kamu: " + score + ". Catat manual dulu!");
   });
 }
 
-// SEMUA FUNGSI LAIN TETAP 100% SAMA (TIDAK ADA PERUBAHAN)
+// SEMUA FUNGSI LAIN TETAP SAMA PERSIS
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
