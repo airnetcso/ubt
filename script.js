@@ -5,19 +5,18 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-// URL Google Sheet (pakai yang sesuai dengan app UBT kamu, kalau beda ganti di sini)
+// URL Google Sheet (pakai yang sesuai dengan app UBT kamu)
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
-// ^^^ Kalau kamu pakai yang lama (AKfycbzw...), ganti sesuai GAS yang benar untuk UBT
 
-// FUNGSI KIRIM SKOR UBT KE KOLOM UBT DI SHEET UTAMA (FIXED VERSION)
+// FUNGSI KIRIM SKOR UBT KE KOLOM UBT DI SHEET UTAMA (FIXED - pakai GET query string)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 Mengirim skor UBT ke Google Sheet (kolom UBT) - versi form-urlencoded");
+  console.log("🔥 Mengirim skor UBT ke Google Sheet (kolom UBT) - versi GET query string");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
   const persentase = Math.round((score / maxScore) * 100);
 
-  // Anti duplicate (biar nggak double entry)
+  // Anti duplicate (tetep jalan seperti asli)
   const key = "ubt_sent_" + username + "_paket" + paket + "_skor" + score;
   if (localStorage.getItem(key) === "sent") {
     console.log("✅ Skor ini sudah pernah dikirim sebelumnya.");
@@ -35,23 +34,21 @@ function sendScoreToSheet(username, paket, score) {
     keterangan: score >= 80 ? "Lulus UBT Paket " + paket : "Belum lulus UBT (skor < 80)"
   };
 
-  const formData = new URLSearchParams(dataToSend);
+  // FIX: Pakai GET dengan query string (body nggak hilang pas redirect GAS)
+  const params = new URLSearchParams(dataToSend);
+  const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now(); // cache-bust
 
-  fetch(SPREADSHEET_URL, {
-    method: "POST",
-    body: formData,
+  fetch(url, {
+    method: "GET",
+    mode: "no-cors",
     redirect: "follow"
   })
-  .then(res => {
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-    console.log("✅ Skor UBT berhasil dikirim ke sheet");
+  .then(() => {
+    console.log("✅ Skor UBT terkirim via GET query string");
   })
   .catch(err => {
-    console.error("⚠️ Gagal kirim ke sheet:", err);
-    // Optional: kasih tahu user kalau gagal
-    // alert("Gagal kirim ke server. Nilai kamu: " + score + ". Catat manual dulu!");
+    console.error("⚠️ Gagal kirim via GET:", err);
+    // Optional: alert("Gagal kirim ke server. Nilai kamu: " + score + ". Catat manual dulu!");
   });
 }
 
