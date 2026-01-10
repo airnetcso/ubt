@@ -5,47 +5,57 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
+// URL Google Sheet UBT (WA baru yang kamu kasih)
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxapcWi7Oegep2wwVADsdJLI8Fyumg30U-9hPpG88qtpVgIduEbwo6LYslkbEcpfqwewg/exec";
 
+// FUNGSI KIRIM SKOR UBT (FINAL - POST no-cors tanpa fallback biar nggak double)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 KIRIM SKOR KE SHEET - FINAL VERSION (FORMDATA + BEACON)");
-  console.log("Username:", username, "| Paket:", paket, "| Skor:", score);
+  console.log("🔥 Kirim skor UBT - POST no-cors SAFE FINAL");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
   const persentase = Math.round((score / maxScore) * 100);
 
-  const formData = new FormData();
-  formData.append("username", username || "Anonymous");
-  formData.append("kodeSoal", "TRYOUT " + ("0" + paket).slice(-2));
-  formData.append("jenisAplikasi", "UBT");
-  formData.append("skor", score);
-  formData.append("persentase", persentase);
-  formData.append("catatan", "");
+  // Anti duplicate
+  const key = "ubt_sent_" + username + "_p" + paket + "_s" + score;
+  if (localStorage.getItem(key) === "sent") {
+    console.log("✅ Skor sudah dikirim.");
+    return;
+  }
+  localStorage.setItem(key, "sent");
 
-  // POST FormData – paling kompatibel dengan Apps Script
+  const dataToSend = {
+    waktu: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}),
+    namaSiswa: username || "Anonymous",
+    code: "UBT TRYOUT " + paket,
+    kosaKata: "-",
+    ubt: `${score}/${maxScore} (${persentase}%)`,
+    latihanSoal: "-",
+    keterangan: score >= 80 ? "Lulus P" + paket : "Gagal <80"
+  };
+
+  console.log("Data kirim:", dataToSend);
+
+  const formData = new URLSearchParams(dataToSend);
+
+  // POST no-cors + keepalive (request tetep jalan meski redirect)
   fetch(SPREADSHEET_URL, {
     method: "POST",
     mode: "no-cors",
-    body: formData
+    keepalive: true,
+    body: formData,
+    redirect: "follow"
   })
-  .then(() => console.log("✅ BERHASIL KIRIM VIA POST FORMDATA!"))
-  .catch(() => console.log("ℹ️ POST blocked (normal), lanjut beacon"));
-
-  // Beacon fallback (pasti sampai)
-  const params = new URLSearchParams();
-  for (const [key, value] of formData.entries()) {
-    params.append(key, value);
-  }
-  const beaconUrl = SPREADSHEET_URL + "?" + params.toString() + "&t=" + Date.now();
-  const beacon = new Image();
-  beacon.src = beaconUrl;
-  beacon.onload = () => console.log("✅ BEACON BERHASIL! Skor pasti masuk sheet");
-  beacon.onerror = () => console.log("⚠️ Beacon error (tapi biasanya tetap masuk)");
-
-  console.log("📤 Data terkirim ganda (POST + Beacon) – aman bro!");
+  .then(() => {
+    console.log("✅ POST sukses (no-cors - opaque OK)");
+  })
+  .catch(err => {
+    console.error("Gagal POST:", err);
+    // TIDAK ADA fallback beacon atau window.open lagi → nggak double Anonymous
+  });
 }
 
+// SEMUA FUNGSI LAIN TETAP SAMA PERSIS
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
