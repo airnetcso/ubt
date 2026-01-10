@@ -5,7 +5,7 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-// URL Google Sheet (pakai yang sesuai dengan app UBT kamu)
+// URL Google Sheet UBT (pastikan ini yang benar dari login/index.html)
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
 
 // FUNGSI KIRIM SKOR UBT KE KOLOM UBT DI SHEET UTAMA (FIXED - pakai GET query string)
@@ -16,7 +16,7 @@ function sendScoreToSheet(username, paket, score) {
   const maxScore = totalSoal * 2.5;
   const persentase = Math.round((score / maxScore) * 100);
 
-  // Anti duplicate (tetep jalan seperti asli)
+  // Anti duplicate
   const key = "ubt_sent_" + username + "_paket" + paket + "_skor" + score;
   if (localStorage.getItem(key) === "sent") {
     console.log("✅ Skor ini sudah pernah dikirim sebelumnya.");
@@ -34,7 +34,7 @@ function sendScoreToSheet(username, paket, score) {
     keterangan: score >= 80 ? "Lulus UBT Paket " + paket : "Belum lulus UBT (skor < 80)"
   };
 
-  // FIX: Pakai GET dengan query string (body nggak hilang pas redirect GAS)
+  // FIX: GET dengan query string (aman dari body loss redirect)
   const params = new URLSearchParams(dataToSend);
   const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now(); // cache-bust
 
@@ -48,11 +48,10 @@ function sendScoreToSheet(username, paket, score) {
   })
   .catch(err => {
     console.error("⚠️ Gagal kirim via GET:", err);
-    // Optional: alert("Gagal kirim ke server. Nilai kamu: " + score + ". Catat manual dulu!");
   });
 }
 
-// SEMUA FUNGSI LAIN TETAP SAMA PERSIS
+// SEMUA FUNGSI LAIN TETAP SAMA PERSIS (copy dari kode kamu sebelumnya)
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
@@ -190,7 +189,7 @@ function finish() {
   results.push({ name: user, paket, score, time: document.getElementById("timerBox")?.innerText || "00:00", date: new Date().toLocaleString("id-ID") });
   localStorage.setItem("results", JSON.stringify(results));
 
-  // Kirim ke Google Sheet → nilai masuk kolom UBT
+  // Kirim ke Google Sheet
   sendScoreToSheet(user, paket, score);
 
   localStorage.clear();
