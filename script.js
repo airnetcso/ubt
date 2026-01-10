@@ -8,9 +8,9 @@ const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 // URL Google Sheet UBT (WA baru yang kamu kasih)
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxapcWi7Oegep2wwVADsdJLI8Fyumg30U-9hPpG88qtpVgIduEbwo6LYslkbEcpfqwewg/exec";
 
-// FUNGSI KIRIM SKOR UBT (FINAL - GET query string dengan short key)
+// FUNGSI KIRIM SKOR UBT (FINAL - POST + beacon fallback)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 Kirim skor UBT - GET query string FINAL");
+  console.log("🔥 Kirim skor UBT - POST + beacon SAFE FINAL");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
@@ -24,35 +24,35 @@ function sendScoreToSheet(username, paket, score) {
   }
   localStorage.setItem(key, "sent");
 
-  // Short key + value minimal (biar query string aman & pendek)
   const dataToSend = {
-    t: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}), // waktu
-    n: username || "Anon", // namaSiswa
-    c: "UT" + paket, // code
-    k: "-", // kosaKata
-    u: score + "/" + maxScore + "(" + persentase + "%)", // ubt
-    l: "-", // latihanSoal
-    t: score >= 80 ? "L" : "G" // keterangan: L=Lulus, G=Gagal
+    waktu: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}),
+    namaSiswa: username || "Anonymous",
+    code: "UBT TRYOUT " + paket,
+    kosaKata: "-",
+    ubt: `${score}/${maxScore} (${persentase}%)`,
+    latihanSoal: "-",
+    keterangan: score >= 80 ? "Lulus P" + paket : "Gagal <80"
   };
 
-  console.log("Data kirim (short):", dataToSend);
+  console.log("Data kirim:", dataToSend);
 
-  const params = new URLSearchParams(dataToSend);
-  const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now();
+  const formData = new URLSearchParams(dataToSend);
 
-  console.log("URL GET yang dikirim:", url); // LOG PENTING buat debug
-
-  fetch(url, {
-    method: "GET",
+  // Primary: POST no-cors + keepalive
+  fetch(SPREADSHEET_URL, {
+    method: "POST",
     mode: "no-cors",
+    keepalive: true,
+    body: formData,
     redirect: "follow"
-  })
-  .then(() => {
-    console.log("✅ Terkirim via GET query string");
-  })
-  .catch(err => {
-    console.error("Gagal GET:", err);
-  });
+  }).catch(() => console.log("POST selesai (opaque normal)"));
+
+  // Fallback beacon (image GET)
+  const beaconUrl = SPREADSHEET_URL + "?" + formData.toString() + "&_=" + Date.now();
+  const img = new Image();
+  img.src = beaconUrl;
+  img.onload = () => console.log("Beacon fallback OK");
+  img.onerror = () => console.log("Beacon error (normal di no-cors)");
 }
 
 // SEMUA FUNGSI LAIN TETAP SAMA PERSIS
