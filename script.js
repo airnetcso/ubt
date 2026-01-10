@@ -6,7 +6,7 @@ const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
 // URL Google Sheet UBT (web app baru yang kamu samain)
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzwdfNflhqIyVWo8knAyB2nWtzlkbPiRHfMCJV_O_mxkZravDprrAhMNV3Qu75WFYgk0g/exec";
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxapcWi7Oegep2wwVADsdJLI8Fyumg30U-9hPpG88qtpVgIduEbwo6LYslkbEcpfqwewg/exec";
 
 // FUNGSI KIRIM SKOR UBT (FINAL SAFE - short key + minimal keterangan)
 function sendScoreToSheet(username, paket, score) {
