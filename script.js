@@ -5,12 +5,12 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-// URL Google Sheet UBT (web app baru yang kamu samain)
+// URL Google Sheet UBT (WA baru yang kamu kasih)
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxapcWi7Oegep2wwVADsdJLI8Fyumg30U-9hPpG88qtpVgIduEbwo6LYslkbEcpfqwewg/exec";
 
-// FUNGSI KIRIM SKOR UBT (FINAL SAFE - short key + minimal keterangan)
+// FUNGSI KIRIM SKOR UBT (FINAL - GET query string dengan short key)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 Kirim skor UBT - GET SAFE FINAL");
+  console.log("🔥 Kirim skor UBT - GET query string FINAL");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
@@ -24,7 +24,7 @@ function sendScoreToSheet(username, paket, score) {
   }
   localStorage.setItem(key, "sent");
 
-  // Short key + value minimal (biar query string < 1000 char)
+  // Short key + value minimal (biar query string aman & pendek)
   const dataToSend = {
     t: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}), // waktu
     n: username || "Anon", // namaSiswa
@@ -35,21 +35,27 @@ function sendScoreToSheet(username, paket, score) {
     t: score >= 80 ? "L" : "G" // keterangan: L=Lulus, G=Gagal
   };
 
-  console.log("Data kirim SAFE:", dataToSend);
+  console.log("Data kirim (short):", dataToSend);
 
   const params = new URLSearchParams(dataToSend);
   const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now();
+
+  console.log("URL GET yang dikirim:", url); // LOG PENTING buat debug
 
   fetch(url, {
     method: "GET",
     mode: "no-cors",
     redirect: "follow"
   })
-  .then(() => console.log("✅ Terkirim via GET SAFE"))
-  .catch(err => console.error("Gagal GET SAFE:", err));
+  .then(() => {
+    console.log("✅ Terkirim via GET query string");
+  })
+  .catch(err => {
+    console.error("Gagal GET:", err);
+  });
 }
 
-// SEMUA FUNGSI LAIN TETAP SAMA (loadSoal, buildGrid, dll)
+// SEMUA FUNGSI LAIN TETAP SAMA PERSIS
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
