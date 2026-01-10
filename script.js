@@ -6,7 +6,7 @@ const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
 // URL Google Sheet UBT (WA baru yang kamu kasih)
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxapcWi7Oegep2wwVADsdJLI8Fyumg30U-9hPpG88qtpVgIduEbwo6LYslkbEcpfqwewg/exec";
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
 // FUNGSI KIRIM SKOR UBT (FINAL - POST no-cors tanpa fallback biar nggak double)
 function sendScoreToSheet(username, paket, score) {
