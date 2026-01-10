@@ -34,7 +34,9 @@ function sendScoreToSheet(username, paket, score) {
     keterangan: score >= 80 ? "Lulus UBT Paket " + paket : "Belum lulus UBT (skor < 80)"
   };
 
-  // FIX: GET dengan query string (aman dari body loss redirect)
+  console.log("Data yang akan dikirim:", dataToSend); // LOG untuk cek di console
+
+  // FIX: GET dengan query string (aman dari body loss redirect GAS)
   const params = new URLSearchParams(dataToSend);
   const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now(); // cache-bust
 
@@ -51,7 +53,7 @@ function sendScoreToSheet(username, paket, score) {
   });
 }
 
-// SEMUA FUNGSI LAIN TETAP SAMA PERSIS (copy dari kode kamu sebelumnya)
+// SEMUA FUNGSI LAIN TETAP SAMA PERSIS
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
