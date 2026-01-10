@@ -5,55 +5,51 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-// URL Google Sheet UBT (pastikan ini yang benar dari login/index.html)
-const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbyfCZ5YNQHDLyKWatqj-diL8tXRRwXBKfJaaYMqcqoShABYy4Gx6QpexPOB_MkZwpIwLw/exec";
+// URL Google Sheet UBT (pastikan benar dari login/index.html)
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzwdfNflhqIyVWo8knAyB2nWtzlkbPiRHfMCJV_O_mxkZravDprrAhMNV3Qu75WFYgk0g/exec";
 
-// FUNGSI KIRIM SKOR UBT KE KOLOM UBT DI SHEET UTAMA (FIXED - pakai GET query string)
+// FUNGSI KIRIM SKOR UBT (FIXED FINAL - GET query string + short key biar nggak terpotong)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 Mengirim skor UBT ke Google Sheet (kolom UBT) - versi GET query string");
+  console.log("🔥 Mengirim skor UBT - GET query string FINAL");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
   const persentase = Math.round((score / maxScore) * 100);
 
   // Anti duplicate
-  const key = "ubt_sent_" + username + "_paket" + paket + "_skor" + score;
+  const key = "ubt_sent_" + username + "_p" + paket + "_s" + score;
   if (localStorage.getItem(key) === "sent") {
-    console.log("✅ Skor ini sudah pernah dikirim sebelumnya.");
+    console.log("✅ Skor sudah dikirim.");
     return;
   }
   localStorage.setItem(key, "sent");
 
+  // Short key biar query string nggak terlalu panjang (limit ~2000 char)
   const dataToSend = {
-    waktu: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}),
-    namaSiswa: username || "Anonymous",
-    code: "UBT TRYOUT " + paket,
-    kosaKata: "-",
-    ubt: `${score}/${maxScore} (${persentase}%)`, // ← MASUK KE KOLOM UBT
-    latihanSoal: "-",
-    keterangan: score >= 80 ? "Lulus UBT Paket " + paket : "Belum lulus UBT (skor < 80)"
+    w: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}), // waktu
+    n: username || "Anonymous", // namaSiswa
+    c: "UT" + paket, // code (short)
+    k: "-", // kosaKata
+    u: `${score}/${maxScore} (${persentase}%)`, // ubt
+    l: "-", // latihanSoal
+    t: score >= 80 ? "Lulus P" + paket : "Gagal <80" // keterangan short
   };
 
-  console.log("Data yang akan dikirim:", dataToSend); // LOG untuk cek di console
+  console.log("Data kirim:", dataToSend);
 
-  // FIX: GET dengan query string (aman dari body loss redirect GAS)
   const params = new URLSearchParams(dataToSend);
-  const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now(); // cache-bust
+  const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now();
 
   fetch(url, {
     method: "GET",
     mode: "no-cors",
     redirect: "follow"
   })
-  .then(() => {
-    console.log("✅ Skor UBT terkirim via GET query string");
-  })
-  .catch(err => {
-    console.error("⚠️ Gagal kirim via GET:", err);
-  });
+  .then(() => console.log("✅ Terkirim via GET"))
+  .catch(err => console.error("Gagal GET:", err));
 }
 
-// SEMUA FUNGSI LAIN TETAP SAMA PERSIS
+// SEMUA FUNGSI LAIN TETAP SAMA (copy dari kode kamu sebelumnya)
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
@@ -191,7 +187,6 @@ function finish() {
   results.push({ name: user, paket, score, time: document.getElementById("timerBox")?.innerText || "00:00", date: new Date().toLocaleString("id-ID") });
   localStorage.setItem("results", JSON.stringify(results));
 
-  // Kirim ke Google Sheet
   sendScoreToSheet(user, paket, score);
 
   localStorage.clear();
