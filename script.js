@@ -8,9 +8,9 @@ const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 // URL Google Sheet UBT (WA baru yang kamu kasih)
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbxapcWi7Oegep2wwVADsdJLI8Fyumg30U-9hPpG88qtpVgIduEbwo6LYslkbEcpfqwewg/exec";
 
-// FUNGSI KIRIM SKOR UBT (FINAL - POST + beacon fallback)
+// FUNGSI KIRIM SKOR UBT (FINAL - POST no-cors tanpa fallback biar nggak double)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 Kirim skor UBT - POST + beacon SAFE FINAL");
+  console.log("🔥 Kirim skor UBT - POST no-cors SAFE FINAL");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
@@ -38,21 +38,21 @@ function sendScoreToSheet(username, paket, score) {
 
   const formData = new URLSearchParams(dataToSend);
 
-  // Primary: POST no-cors + keepalive
+  // POST no-cors + keepalive (request tetep jalan meski redirect)
   fetch(SPREADSHEET_URL, {
     method: "POST",
     mode: "no-cors",
     keepalive: true,
     body: formData,
     redirect: "follow"
-  }).catch(() => console.log("POST selesai (opaque normal)"));
-
-  // Fallback beacon (image GET)
-  const beaconUrl = SPREADSHEET_URL + "?" + formData.toString() + "&_=" + Date.now();
-  const img = new Image();
-  img.src = beaconUrl;
-  img.onload = () => console.log("Beacon fallback OK");
-  img.onerror = () => console.log("Beacon error (normal di no-cors)");
+  })
+  .then(() => {
+    console.log("✅ POST sukses (no-cors - opaque OK)");
+  })
+  .catch(err => {
+    console.error("Gagal POST:", err);
+    // TIDAK ADA fallback beacon atau window.open lagi → nggak double Anonymous
+  });
 }
 
 // SEMUA FUNGSI LAIN TETAP SAMA PERSIS
