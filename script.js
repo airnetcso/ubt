@@ -5,12 +5,12 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-// URL Google Sheet UBT (yang kamu pakai di login/index.html)
+// URL Google Sheet UBT (web app baru yang kamu samain)
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzwdfNflhqIyVWo8knAyB2nWtzlkbPiRHfMCJV_O_mxkZravDprrAhMNV3Qu75WFYgk0g/exec";
 
-// FUNGSI KIRIM SKOR UBT (FIXED FINAL - GET query string + short key)
+// FUNGSI KIRIM SKOR UBT (FINAL SAFE - short key + minimal keterangan)
 function sendScoreToSheet(username, paket, score) {
-  console.log("🔥 Mengirim skor UBT - GET query string FINAL");
+  console.log("🔥 Kirim skor UBT - GET SAFE FINAL");
 
   const totalSoal = questions.length || 40;
   const maxScore = totalSoal * 2.5;
@@ -24,17 +24,18 @@ function sendScoreToSheet(username, paket, score) {
   }
   localStorage.setItem(key, "sent");
 
+  // Short key + value minimal (biar query string < 1000 char)
   const dataToSend = {
-    w: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}), // waktu
-    n: username || "Anonymous", // namaSiswa
-    c: "UT" + paket, // code (short)
+    t: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}), // waktu
+    n: username || "Anon", // namaSiswa
+    c: "UT" + paket, // code
     k: "-", // kosaKata
-    u: `${score}/${maxScore} (${persentase}%)`, // ubt
+    u: score + "/" + maxScore + "(" + persentase + "%)", // ubt
     l: "-", // latihanSoal
-    t: score >= 80 ? "Lulus" : "Gagal <80" // keterangan short
+    t: score >= 80 ? "L" : "G" // keterangan: L=Lulus, G=Gagal
   };
 
-  console.log("Data kirim (short):", dataToSend);
+  console.log("Data kirim SAFE:", dataToSend);
 
   const params = new URLSearchParams(dataToSend);
   const url = SPREADSHEET_URL + "?" + params.toString() + "&_=" + Date.now();
@@ -44,15 +45,11 @@ function sendScoreToSheet(username, paket, score) {
     mode: "no-cors",
     redirect: "follow"
   })
-  .then(() => {
-    console.log("✅ Terkirim via GET query string");
-  })
-  .catch(err => {
-    console.error("Gagal GET:", err);
-  });
+  .then(() => console.log("✅ Terkirim via GET SAFE"))
+  .catch(err => console.error("Gagal GET SAFE:", err));
 }
 
-// SEMUA FUNGSI LAIN TETAP SAMA PERSIS (loadSoal, buildGrid, dll)
+// SEMUA FUNGSI LAIN TETAP SAMA (loadSoal, buildGrid, dll)
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
