@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login CBT UBT</title>
 
-<!-- Tambahan untuk PWA + Landscape Force -->
+<!-- Tambahan untuk PWA + Force Landscape -->
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1e3a8a">
 <meta name="mobile-web-app-capable" content="yes">
@@ -29,18 +29,18 @@ body{
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .login-box{ 
-  width:340px; 
+  width:340px; /* Tetap seperti asli */
   background:rgba(255,255,255,.3); 
   padding:30px 25px; 
   text-align:center; 
   backdrop-filter:blur(6px); 
   border-radius:10px; 
   box-shadow:0 8px 32px rgba(0,0,0,.2); 
-  animation: fadeSlideUp 0.8s ease-out forwards;
+  animation: fadeSlideUp 0.8s ease-out forwards; /* Lebih smooth */
   position:relative;
   overflow:hidden;
   transition:transform .3s, box-shadow .3s;
-  border:1px solid rgba(30,58,138,.2);
+  border:1px solid rgba(30,58,138,.2); /* Gradient border tipis biru tua */
 }
 .login-box::before {
   content:'';
@@ -52,7 +52,7 @@ body{
   opacity:0;
   transition:opacity .3s;
 }
-.login-box:hover::before { opacity:0.6; }
+.login-box:hover::before { opacity:0.6; } /* Border glow saat hover */
 .login-box:hover {
   transform:translateY(-5px);
   box-shadow:0 15px 40px rgba(0,0,0,.3);
@@ -79,26 +79,26 @@ input, select {
   transition:background .3s, box-shadow .3s;
 }
 input::placeholder, select::placeholder {
-  color:rgba(255,255,255,.45);
+  color:rgba(255,255,255,.45); /* Transparan putih */
   opacity:1;
   transition:color .3s;
 }
 input:focus::placeholder, select:focus::placeholder {
-  color:rgba(255,255,255,.8);
+  color:rgba(255,255,255,.8); /* Fade-in placeholder saat fokus */
 }
 input:focus, select:focus{ 
   box-shadow:0 0 0 2px #60a5fa; 
   background:rgba(255,255,255,.3);
 }
 button{ 
-  background:#1e3a8a;
+  background:#1e3a8a; /* Biru tua navy */
   color:#fff; 
   cursor:pointer; 
   font-weight:bold; 
   transition:background .3s, transform .2s; 
 }
 button:hover{ 
-  background:#172554;
+  background:#172554; /* Lebih gelap */
   transform:translateY(-2px);
   animation: pulse 1.5s infinite;
 }
@@ -129,7 +129,7 @@ button:hover{
   margin-top:15px; 
 }
 
-/* Portrait Warning (baru) */
+/* Portrait Warning */
 #portrait-warning {
   position: fixed;
   top: 0; left: 0;
@@ -149,7 +149,7 @@ button:hover{
 </head>
 <body>
 
-<!-- Warning Portrait (baru - hanya muncul pas portrait) -->
+<!-- Portrait Warning -->
 <div id="portrait-warning">
   <h2>Mode Landscape Diperlukan!</h2>
   <p>App ini dirancang untuk tampilan horizontal.<br>
@@ -179,7 +179,28 @@ button:hover{
  const users = [
   {username:"uus",password:"111"},
   {username:"windi",password:"Windi2000"},
-  // ... semua users lu yang lain tetep sama ...
+  {username:"rismaya97",password:"bahasakorea"},
+  {username:"sita77",password:"minyooki"},
+  {username:"Aini185",password:"Doraemon"},
+  {username:"Hangeulfei",password:"studykorea02"},
+  {username:"Hamdan106",password:"Fukuo106"},
+  {username:"Heri",password:"heri99"},
+  {username:"hanarizka",password:"Nungkihana24!"},
+  {username:"Fikrisurya",password:"464646"},
+  {username:"Mutiara2003",password:"Mutiara14"},
+  {username:"dinda",password:"dinda1999"},
+  {username:"wantikas",password:"200022"},
+  {username:"Dininidia",password:"dininidia11"},
+  {username:"kaniarostayuni9",password:"Kania1313"},
+  {username:"Dikisetiawan07",password:"Diki2709"},
+  {username:"Aisyah18",password:"Aisyah18."},
+  {username:"Rizka2026",password:"butterfly24"},
+  {username:"Zhafif07",password:"20060722"},
+  {username:"siwon",password:"kampus2"},
+  {username:"Satria11",password:"Satria113"},
+  {username:"sultan2026",password:"sultandaulah"},
+  {username:"yppsdi",password:"global2026"},
+  {username:"Azizah27_",password:"Azzh271"},
   {username:"mila",password:"lestari"}
  ];
 
@@ -214,7 +235,11 @@ button:hover{
   localStorage.setItem("user",u);
   localStorage.setItem("paket",paket);
   
-  location.href = "dashboard.html";
+  if(user.role === "admin") {
+   location.href = "https://airnetcso.github.io/admin/";
+  } else {
+   location.href = "dashboard.html";
+  }
  }
 
  // Enter untuk login
@@ -223,7 +248,7 @@ button:hover{
  });
  </script>
 
-<!-- Script landscape force (baru) -->
+<!-- Tambahan JS untuk force landscape -->
 <script>
 async function forceLandscape() {
   if (screen.orientation && screen.orientation.lock) {
@@ -232,25 +257,31 @@ async function forceLandscape() {
       console.log("Locked to landscape!");
     } catch (err) {
       console.warn("Orientation lock gagal:", err);
-      showPortraitWarning();
     }
-  } else {
-    showPortraitWarning();
   }
 }
 
 function showPortraitWarning() {
   document.getElementById("portrait-warning").style.display = "flex";
-  document.querySelector(".login-box").style.display = "none"; // optional: sembunyiin form pas warning
+  document.querySelector(".login-box").style.display = "none";
+  document.querySelector(".copyright").style.display = "none";
 }
 
-window.addEventListener('load', forceLandscape);
+function hidePortraitWarning() {
+  document.getElementById("portrait-warning").style.display = "none";
+  document.querySelector(".login-box").style.display = "block";
+  document.querySelector(".copyright").style.display = "block";
+}
+
+window.addEventListener('load', () => {
+  forceLandscape();
+});
+
 window.addEventListener('orientationchange', () => {
-  if (screen.orientation.type.includes("portrait")) {
+  if (screen.orientation && screen.orientation.type.includes("portrait")) {
     showPortraitWarning();
   } else {
-    document.getElementById("portrait-warning").style.display = "none";
-    document.querySelector(".login-box").style.display = "block";
+    hidePortraitWarning();
   }
 });
 </script>
