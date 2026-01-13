@@ -51,6 +51,7 @@ function sendScoreToSheet(username, paket, score) {
   })
   .catch(err => {
     console.error("Gagal POST:", err);
+    // TIDAK ADA fallback beacon atau window.open lagi → nggak double Anonymous
   });
 }
 
@@ -200,24 +201,9 @@ function finish() {
   location.href = "index.html";
 }
 
-// Tambahan force landscape di semua page
-async function forceLandscape() {
-  if (screen.orientation && screen.orientation.lock) {
-    try {
-      await screen.orientation.lock("landscape-primary");
-      console.log("Locked to landscape!");
-    } catch (err) {
-      console.warn("Orientation lock gagal:", err);
-    }
-  }
-}
-
-window.addEventListener('load', async () => {
+window.onload = async () => {
   console.log("🚀 UBT App mulai...");
   await loadSoal();
   if (document.getElementById("listen")) buildGrid();
   if (document.getElementById("questionBox")) loadQuestionPage();
-  await forceLandscape();  // Panggil setelah load konten
-});
-
-window.addEventListener('orientationchange', forceLandscape);
+};
