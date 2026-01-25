@@ -21,7 +21,7 @@
     "question": "들은 것을 고르십시오.",
     "options": ["", ")", "", ""],
     "answer": 2,
-    "image": "https://airnetcso.github.io/eps/image/5.jpg",
+    "image": "https://airnetcso.github.io/eps/image/3-2.jpg",
     "audio": "https://airnetcso.github.io/eps/audio/3.mp3"
   },
   {
@@ -30,7 +30,7 @@
     "question": "들은 것을 고르십시오.",
     "options": ["", "", "", ""],
     "answer": 1,
-    "image": "https://airnetcso.github.io/eps/image/5.jpg",
+    "image": "https://airnetcso.github.io/eps/image/4-2.jpg",
     "audio": "https://airnetcso.github.io/eps/audio/4.mp3"
   },
   {
@@ -39,7 +39,7 @@
     "question": "이것은 무엇입니까?",
     "options": ["", "", "", ""],
     "answer": 1,
-    "image": "https://airnetcso.github.io/eps/image/5.jpg",
+    "image": "https://airnetcso.github.io/eps/image/5-2.jpg",
     "audio": "https://airnetcso.github.io/eps/audio/5.mp3"
   },
   {
@@ -48,7 +48,7 @@
     "question": "여기는 어디입니까?",
     "options": ["", "", "", ""],
     "answer": 1,
-    "image": "https://airnetcso.github.io/eps/image/6.jpg",
+    "image": "https://airnetcso.github.io/eps/image/6-2.jpg",
     "audio": "https://airnetcso.github.io/eps/audio/6.mp3"
   },
   {
@@ -57,7 +57,7 @@
     "question": "이 사람은 무엇을 하고 있습니까?",
     "options": ["", "", "", ""],
     "answer": 1,
-    "image": "https://airnetcso.github.io/eps/image/7.jpg",
+    "image": "https://airnetcso.github.io/eps/image/7-2.jpg",
     "audio": "https://airnetcso.github.io/eps/audio/7.mp3"
   },
   {
@@ -66,7 +66,7 @@
     "question": "양복이 얼마나 있습니까?",
     "options": ["", "", "", ""],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/8.jpg",
+    "image": "https://airnetcso.github.io/eps/image/8-2.jpg",
     "audio": "https://airnetcso.github.io/eps/audio/8.mp3"
   },
   {
@@ -75,7 +75,7 @@
     "question": "인형 가게는 어디에 있습니까?",
     "options": ["", "", "", ""],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/9.jpg",
+    "image": "https://airnetcso.github.io/eps/image/9-2.jpg",
     "audio": "https://airnetcso.github.io/eps/audio/9.mp3"
   },
   {
@@ -311,3 +311,4 @@
     "answer": 3
   }
 ]
+
