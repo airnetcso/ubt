@@ -1,0 +1,317 @@
+[
+  {
+    "id": 1,
+    "type": "listening",
+    "question": "들은 것을 고르십시오.",
+    "options": ["망치", "방치", "장치", "정지"],
+    "answer": 1,
+    "audio": "https://airnetcso.github.io/topik/audio/1-5.mp3"
+  },
+  {
+    "id": 2,
+    "type": "listening",
+    "question": "들은 것을 고르십시오.",
+    "options": ["한번 읽어 보세요", "한번 입어 보세요", "한별 입어 보세요", "한번 먹어보세요."],
+    "answer": 2,
+    "audio": "https://airnetcso.github.io/topik/audio/2-5.mp3"
+  },
+  {
+    "id": 3,
+    "type": "listening",
+    "question": "들은 것을 고르십시오.",
+    "options": ["", "", "", ""],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/topik/image/3-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/3-5.mp3"
+  },
+  {
+    "id": 4,
+    "type": "listening",
+    "question": "들은 것을 고르십시오.",
+    "options": ["", "", "", ""],
+    "answer": 4,
+    "image": "https://airnetcso.github.io/topik/image/4-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/4-5.mp3"
+  },
+  {
+    "id": 5,
+    "type": "listening",
+    "question": "이 사람은 무엇을 하고 있습니까 ?",
+    "options": ["", "", "", ""],
+    "answer": 1,
+    "image": "https://airnetcso.github.io/topik/image/5-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/5-5.mp3"
+  },
+  {
+    "id": 6,
+    "type": "listening",
+    "question": "이 것은 무엇입니까 ?",
+    "options": ["", "", "", ""],
+    "answer": 2,
+    "image": "https://airnetcso.github.io/topik/image/6-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/6-5.mp3"
+  },
+  {
+    "id": 7,
+    "type": "listening",
+    "question": "여기는 어디입니까 ?",
+    "options": ["", "", "", ""],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/topik/image/7-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/7-5.mp3"
+  },
+  {
+    "id": 8,
+    "type": "listening",
+    "question": "3 월 셋째 화요일은 며칠입니까 ?",
+    "options": ["", "", "", ""],
+    "answer": 4,
+    "image": "https://airnetcso.github.io/topik/image/8-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/8-5.mp3"
+  },
+  {
+    "id": 9,
+    "type": "listening",
+    "question": "슈퍼마켓은 어디에 있습니까 ?",
+    "options": ["", "", "", ""],
+    "answer": 1,
+    "image": "https://airnetcso.github.io/topik/image/9-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/9-5.mp3"
+  },
+  {
+    "id": 10,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["아니요, 여러번 가 봤어요.", "아니요, 두번 밖에 못 봤어요.", "아니요, 어제 회식에 못 갔어요.", "아니요, 회식에 있어서 못 갔어요."],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/topik/audio/10-5.mp3"
+  },
+  {
+    "id": 11,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["알아요, 리한 씨와 교대해요.", "아니요, 다음 주라고 들었어요.", "글세요, 공정에서 교대할 거예요.", "몰라요, 반장님께 여쭤보세요."],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/topik/audio/11-5.mp3"
+  },
+  {
+    "id": 12,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["보안경을 착용하세요.", "마스트를 쓰고 있어서 괜찮아요.", "페인트하고 붓을 정리하세요.", "지금 곧 페인트 칠을 시작해요."],
+    "answer": 1,
+    "audio": "https://airnetcso.github.io/topik/audio/12-5.mp3"
+  },
+  {
+    "id": 13,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["알아요, 시내에 있어요.", "몰라요, 주소가 없어요.", "알아요, 내일 가려고 해요.", "몰라요, 114 에 물어보세요."],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/topik/audio/13-5.mp3"
+  },
+  {
+    "id": 14,
+    "type": "listening",
+    "question": "다음을 듣고 이어지는 말을 고르십시오.",
+    "options": ["예약을 한 후에 오시면 좋습니다.", "상담을 하면 많은 도움을 받습니다.", "예약을 하기 전에 상담을 받습니다.", "상단을 한 후에 하려고 합니다."],
+    "answer": 1,
+    "audio": "https://airnetcso.github.io/topik/audio/14-5.mp3"
+  },
+  {
+    "id": 15,
+    "type": "listening",
+    "question": "다음을 듣고 이어지는 말을 고르십시오.",
+    "options": ["지금 서류를 받아서 가져와도 돼요.", "자금 작업 중이니까 끝내고 갈게요.", "오늘까지 서류를 작성해서 내야 돼요.", "오늘은 사람이 많으니까 나중에 쓸게요."],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/topik/audio/15-5.mp3"
+  },
+  {
+    "id": 16,
+    "type": "listening",
+    "question": "잘 듣고 들은 내용과 관계있는 그림을 고르십시오.",
+    "options": ["09.00 – 19.00", "09.00 – 17.00", "09.00 – 17.00", "09.00 – 19.00"],
+    "answer": 2,
+    "image": "https://airnetcso.github.io/topik/image/16-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/16-5.mp3"
+  },
+  {
+    "id": 17,
+    "type": "listening",
+    "question": "잘 듣고 들은 내용과 관계있는 그림을 고르십시오.",
+    "options": ["", "", "", ""],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/topik/image/17-5.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/17-5.mp3"
+  },
+  {
+    "id": 18,
+    "type": "listening",
+    "question": "여자는 지금 어디에 있습니까 ?",
+    "options": ["버스 안", "백화점 안", "지하철 안", "지하철역 안"],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/topik/audio/18-5.mp3"
+  },
+  {
+    "id": 19,
+    "type": "listening",
+    "question": "남자가 여자에게 하고 싶은 이야기는 무엇입니까 ?",
+    "options": ["작업장은 매우 더운 곳입니다.", "장갑을 끼고 해야 안전하다.", "작업장이 불편해도 참아야 한다.", "큰 사고가 나면 도와주다."],
+    "answer": 2,
+    "audio": "https://airnetcso.github.io/topik/audio/19-5.mp3"
+  },
+  {
+    "id": 20,
+    "type": "listening",
+    "question": "두 사람은 무엇에 대해 이야기 하고 있습니까 ?",
+    "options": ["퇴직금", "최저 임금", "월급 내역", "고용보험"],
+    "answer": 2,
+    "audio": "https://airnetcso.github.io/eps/audio/20-5.mp3"
+  },
+  {
+    "id": 21,
+    "type": "reading",
+    "question": "다음 단어와 관계있는 것은 고르십시오.\n\n등산, 태권도, 수영, 축구",
+    "options": ["타다", "하다", "치다", "나다"],
+    "answer": 2
+  },
+  {
+    "id": 22,
+    "type": "reading",
+    "question": "다음 단어의 반대되는 말을 무엇입니까 ?\n\n차례를 지키다",
+    "options": ["과속하다", "침을 뱉다", "세치기를 하다", "어기다"],
+    "answer": 3
+  },
+  {
+    "id": 23,
+    "type": "reading",
+    "question": "빈칸에 돌아갈 가장 알맞은 것을 고르십시오.\n\n오늘 도서관에 처음 왔어요. 책을 ______ 아떻게 해야 해요 ?",
+    "options": ["사고 싶은데", "빌리고 싶은데", "보내고 싶은데", "바꾸고 싶은데"],
+    "answer": 2
+  },
+  {
+    "id": 24,
+    "type": "reading",
+    "question": "빈칸에 돌아갈 가장 알맞은 것을 고르십시오.\n\n저는 무역 회사에 ______ 외국어를 공부합니다. 여러 언어를 알면 나중에 해외에서 일할 때 도움이 될 것 같아서요.",
+    "options": ["가면", "가면서", "다니면", "다니면서"],
+    "answer": 4
+  },
+  {
+    "id": 25,
+    "type": "reading",
+    "question": "빈칸에 돌아갈 가장 알맞은 것을 고르십시오.\n\n회사에는 새로 나오는 직원을 ______ 라고 합니다.",
+    "options": ["후배", "사장님", "경찰", "상사"],
+    "answer": 1
+  },
+  {
+    "id": 26,
+    "type": "reading",
+    "question": "빈칸에 돌아갈 가장 알맞은 것을 고르십시오.\n\n은행에서 통장을 만들고 싶으면 신분증을 가지고 은행에 ______ 가야 합니다. 다른 사람이 대신 가면 통장을 만들 수 없습니다.",
+    "options": ["따로", "직접", "가끔", "미리"],
+    "answer": 2
+  },
+  {
+    "id": 27,
+    "type": "reading",
+    "question": "이 표지는 무슨 뜻입니까 ?",
+    "options": ["여기에서 음식을 먹지 마세요.", "여기에서 사진을 찍지 마세요.", "여기에서 담배를 피우지 마세요.", "여기에서 전화 통화를 하지 마세요."],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/topik/image/27-5.jpg"
+  },
+  {
+    "id": 28,
+    "type": "reading",
+    "question": "이 비행기가 몇 시에 출발합니까 ?",
+    "options": ["서울입니다.", "한국항공입니다.", "유월 사일입니다.", "열한 시 삼십오 분입니다."],
+    "answer": 4,
+    "image": "https://airnetcso.github.io/topik/image/28-5.jpg"
+  },
+  {
+    "id": 29,
+    "type": "reading",
+    "question": "다음 안내문에 대한 설명으로 맞는 것을 고르십시오.",
+    "options": ["이월 십일일 오전부터 진료합니다.", "설날에 하루만 진료를 하지 않습니다.", "설 연휴는 일요일부터 수요일까지입니다.", "연휴에 진료 받을 수 있는 곳은 없습니다."],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/topik/image/29-5.jpg"
+  },
+  {
+    "id": 30,
+    "type": "reading",
+    "question": "다음 그래프에 대한 설명으로 맞는 것을 고르십시오.",
+    "options": ["남자의 11%는 결혼할 여자의 건강을 중요하게 생각합니다.", "아름다운 여자와 결혼하겠다고 생각하는 남자가 제일 많다.", "아내의 직업이 중요하다고 생각하는 남자들은 1%가 안 된다.", "사람보다 결혼할 여자의 돈을 중요하게 생각하는 남자가 더 많다."],
+    "answer": 2,
+    "image": "https://airnetcso.github.io/topik/image/30-5.jpg"
+  },
+  {
+    "id": 31,
+    "type": "reading",
+    "question": "다음 글을 읽고 무엇에 대한 글인지 고르십시오.\n\n새집으로 이사한 사람들이 친구나 친척들을 집으로 초대해서 여는 파티를 집들이라고 합니다. 초대를 받은 사람들은 이사를 축하하기 위해 가루 비누, 두루마리 화장지 같은 선물을 사 갑니다.",
+    "options": ["집들이 문화", "집들이 용식", "집들이 시간", "집들이 예절"],
+    "answer": 1
+  },
+  {
+    "id": 32,
+    "type": "reading",
+    "question": "다음 글을 읽고 무엇에 대한 글인지 고르십시오.\n\n근로자의 정당한 사유 없이 근로계약서에서 정한 소정 근로 일에 사용자의 동의 없이 무단으로 출근하지 않은 것을 말합니다.",
+    "options": ["무단 회식", "무단 외출", "무단 결근", "무단 출근"],
+    "answer": 3
+  },
+  {
+    "id": 33,
+    "type": "reading",
+    "question": "다음 설명에 알맞은 어휘를 고르십시오.\n\n차표, 커피, 음료수 등을 제품을 사려할 때 동전, 지폐, 카드를 이용하는 판매기입니다.",
+    "options": ["자동인출기", "자동판매기", "자동세작기", "충전기"],
+    "answer": 2
+  },
+  {
+    "id": 34,
+    "type": "reading",
+    "question": "다음 설명에 알맞은 어휘를 고르십시오.\n\n근로 시간은 1 주에 40 시간, 일에 8 시간 정하고 있는 시간입니다.",
+    "options": ["휴일 근로 시간", "법정 근로 시간", "연장 근로 시간", "야간 근로 시간"],
+    "answer": 2
+  },
+  {
+    "id": 35,
+    "type": "reading",
+    "question": "다음 그림을 보고 맞는 단어나 문장을 고르십시오.",
+    "options": ["사무실입니다", "식당입니다", "복도입니다", "출입문입니다"],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/topik/image/35-5.jpg"
+  },
+  {
+    "id": 36,
+    "type": "reading",
+    "question": "다음 그림을 보고 맞는 단어나 문장을 고르십시오.",
+    "options": ["옷을 걸고 있습니다.", "옷을 쓰고 있습니다.", "옷을 신고 있습니다.", "옷을 입고 있습니다."],
+    "answer": 1,
+    "image": "https://airnetcso.github.io/topik/image/36-5.jpg"
+  },
+  {
+    "id": 37,
+    "type": "reading",
+    "question": "다음 글을 읽고 내용과 같은 것을 고르십시오.\n\n설날에는 떡국을 먹는데 여기에 장수의 의미가 있습니다. 정월대보름에는 풍요를 기원하면서 다섯 가지 곡식을 섞어 오곡밥을 지어 먹고 1년 내내 건강하기를 바라면서 부럼과 귀밝이술을 먹습니다. 추석에는 수확이 끝난 쌀로 햄쌀밥을 짓고 송편을 만들어 먹습니다.",
+    "options": ["사람들은 장수를 바라면서 송편을 먹는다.", "추석에는 떡국과 오곡밥을 먹는다.", "추석에는 쌀로 햄쌀밥을 짓고 먹는다.", "정월대보름에는 다섯 가지 부럼 섞어 오곡밥을 먹는다."],
+    "answer": 3
+  },
+  {
+    "id": 38,
+    "type": "reading",
+    "question": "다음 글을 읽고 내용과 같은 것을 고르십시오.\n\n이제 낚시를 하기 위해서 멀리 가지 않아도 됩니다. 도시에서 낚시 재료를 살 수 있는 “ 낚시 카페 ” 가 있습니다. 이곳에서는 낚시에 필요한 물건을 빌려 주고 낚시 하는 방법을 가르쳐 줍니다. 물고기를 잡아서 바로 먹을 수 없지만 집으로 가지고 갈 수 있습니다.",
+    "options": ["낚시 카페는 도시에서 먼 곳에 있습니다.", "낚시 카페에서는 낚시 하는 방법을 알려 줍니다.", "낚시에 필요한 물건은 직접 가지고 가야 합니다.", "낚시 카페에서 잡은 물고기는 가져 갈 수 없습니다."],
+    "answer": 2
+  },
+  {
+    "id": 39,
+    "type": "reading",
+    "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n저는 이 공장에서 일한 지 얼마 되지 않아서 일이 서릅니다. ______ 동료들이 잘 가르쳐 줘서 열심히 하고 있습니다.",
+    "options": ["그럼", "그래서", "왜냐하면", "그렇지만"],
+    "answer": 2
+  },
+  {
+    "id": 40,
+    "type": "reading",
+    "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n어제 고친 기계가 또 고장이 ______ . 이 기계는 부품이 오래돼서 다른 기계로 바꿔야 합니다.",
+    "options": ["버렸습니다", "했습니다", "났습니다.", "수리합니다."],
+    "answer": 3
+  }
+]
