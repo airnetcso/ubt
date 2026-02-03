@@ -5,7 +5,7 @@
     "question": "들은 것을 고르십시오.",
     "options": ["물론", "물온", "물꼬", "물론"],
     "answer": 4,
-    "audio": "https://airnetcso.github.io/eps/audio/21.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/1-4.mp3"
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "question": "들은 것을 고르십시오.",
     "options": ["운찐", "운점", "운천", "운전"],
     "answer": 4,
-    "audio": "https://airnetcso.github.io/eps/audio/22.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/2-4.mp3"
   },
   {
     "id": 3,
@@ -21,8 +21,8 @@
     "question": "들은 것을 고르십시오.",
     "options": ["", "", "", ""],
     "answer": 1,
-    "image": "https://airnetcso.github.io/eps/image/23.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/23.mp3"
+    "image": "https://airnetcso.github.io/topik/image/3-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/3-4.mp3"
   },
   {
     "id": 4,
@@ -30,8 +30,8 @@
     "question": "들은 것을 고르십시오.",
     "options": ["", "", "", ""],
     "answer": 2,
-    "image": "https://airnetcso.github.io/eps/image/24.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/24.mp3"
+    "image": "https://airnetcso.github.io/topik/image/4-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/4-4.mp3"
   },
   {
     "id": 5,
@@ -39,8 +39,8 @@
     "question": "이 것은 무엇입니까 ?",
     "options": ["", "", "", ""],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/25.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/25.mp3"
+    "image": "https://airnetcso.github.io/topik/image/5-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/5-4.mp3"
   },
   {
     "id": 6,
@@ -48,8 +48,8 @@
     "question": "여기는 어디입니까 ?",
     "options": ["", "", "", ""],
     "answer": 2,
-    "image": "https://airnetcso.github.io/eps/image/26.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/26.mp3"
+    "image": "https://airnetcso.github.io/topik/image/6-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/6-4.mp3"
   },
   {
     "id": 7,
@@ -57,8 +57,8 @@
     "question": "이 사람은 무엇을 하고 있습니까 ?",
     "options": ["", "", "", ""],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/27.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/27.mp3"
+    "image": "https://airnetcso.github.io/topik/image/7-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/7-4.mp3"
   },
   {
     "id": 8,
@@ -66,8 +66,8 @@
     "question": "얼마나 있습니까 ?",
     "options": ["", "", "", ""],
     "answer": 1,
-    "image": "https://airnetcso.github.io/eps/image/28.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/28.mp3"
+    "image": "https://airnetcso.github.io/topik/image/8-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/8-4.mp3"
   },
   {
     "id": 9,
@@ -75,8 +75,8 @@
     "question": "열쇠가 어디에 있어요 ?",
     "options": ["", "", "", ""],
     "answer": 4,
-    "image": "https://airnetcso.github.io/eps/image/29.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/29.mp3"
+    "image": "https://airnetcso.github.io/topik/image/9-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/9-4.mp3"
   },
   {
     "id": 10,
@@ -84,7 +84,7 @@
     "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
     "options": ["네, 앉으세요.", "네, 여기 있어요.", "네, 앉지 마세요.", "네, 오지 않아도 돼요."],
     "answer": 1,
-    "audio": "https://airnetcso.github.io/eps/audio/30.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/10-4.mp3"
   },
   {
     "id": 11,
@@ -92,7 +92,7 @@
     "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
     "options": ["늦장을 잤거든요.", "일찍 퇴근 했거든요.", "할 일이 남았거든요.", " 일이 빨리 끝났거든요."],
     "answer": 3,
-    "audio": "https://airnetcso.github.io/eps/audio/31.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/11-4.mp3"
   },
   {
     "id": 12,
@@ -100,7 +100,7 @@
     "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
     "options": ["네, 하지 못 해요.", "네, 사고 싶어요.", "네, 여기 없어요.", "네, 할 수 있어요."],
     "answer": 4,
-    "audio": "https://airnetcso.github.io/eps/audio/32.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/12-4.mp3"
   },
   {
     "id": 13,
@@ -108,7 +108,7 @@
     "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
     "options": ["네, 가 보고 싶어요.", "네, 정말 좋았어요.", "네, 가 봤어요.", "숙소도 벌써 다 예약했어요."],
     "answer": 1,
-    "audio": "https://airnetcso.github.io/eps/audio/33.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/13-4.mp3"
   },
   {
     "id": 14,
@@ -116,7 +116,7 @@
     "question": "다음을 듣고 이어지는 말을 고르십시오.",
     "options": ["아니요, 다음 달에 한국에 가요.", "아니요, 날마다 한국말을 공부해요.", "아니요, 오후 2 시부터 4 시까지예요.", "아니요, 토요일에만 수업이 있어요."],
     "answer": 3,
-    "audio": "https://airnetcso.github.io/eps/audio/34.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/14-4.mp3"
   },
   {
     "id": 15,
@@ -124,7 +124,7 @@
     "question": "다음을 듣고 이어지는 말을 고르십시오.",
     "options": ["등산을 자주 가요.", "운동을 하는 중이에요.", "제주도에 간 적이 있어요.", "한국어를 배우면 좋겠어요."],
     "answer": 2,
-    "audio": "https://airnetcso.github.io/eps/audio/35.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/15-4.mp3"
   },
   {
     "id": 16,
@@ -132,8 +132,8 @@
     "question": "잘 듣고 들은 내용과 관계있는 그림을 고르십시오.",
     "options": ["", "", "", ""],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/36.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/36.mp3"
+    "image": "https://airnetcso.github.io/topik/image/16-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/16-4.mp3"
   },
   {
     "id": 17,
@@ -141,8 +141,8 @@
     "question": "잘 듣고 들은 내용과 관계있는 그림을 고르십시오.",
     "options": ["", "", "", ""],
     "answer": 4,
-    "image": "https://airnetcso.github.io/eps/image/37.jpg",
-    "audio": "https://airnetcso.github.io/eps/audio/37.mp3"
+    "image": "https://airnetcso.github.io/topik/image/17-4.jpg",
+    "audio": "https://airnetcso.github.io/topik/audio/17-4.mp3"
   },
   {
     "id": 18,
@@ -150,7 +150,7 @@
     "question": "여자가 여기에 온 이유는 무엇입니까 ?",
     "options": ["여자를 만나고 싶어서", "여자를 선물하고 싶어서", "모니카 씨가 집들이 해서", "집들이에 초대를 받아서"],
     "answer": 4,
-    "audio": "https://airnetcso.github.io/eps/audio/38.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/18-4.mp3"
   },
   {
     "id": 19,
@@ -158,7 +158,7 @@
     "question": "들은 내용과 같은 것을 고르십시오.",
     "options": ["남자는 주문했습니다.", "남자는 커피를 만들 컵니다.", "남자는 커피를 마시고 싶습니다.", "여자는 커피를 마실 수 없습니다."],
     "answer": 3,
-    "audio": "https://airnetcso.github.io/eps/audio/39.mp3"
+    "audio": "https://airnetcso.github.io/topik/audio/19-4.mp3"
   },
   {
     "id": 20,
@@ -166,7 +166,7 @@
     "question": "다음을 듣고 내용과 같은 것을 고르십시오.",
     "options": ["출근 시간에 차가 별로 없습니다.", "출근 시간에 택시를 타는 게 좋습니다.", "지하철을 타면 정확한 시간에 도착할 수 있습니다.", "지하철은 사람도 많고 서서 가니까 좋습니다."],
     "answer": 3,
-    "audio": "https://airnetcso.github.io/eps/audio/40.mp3"
+    "audio": "https://airnetcso.github.io/eps/audio/20-4.mp3"
   },
   {
     "id": 21,
@@ -216,7 +216,7 @@
     "question": "이 표지는 무슨 뜻입니까 ?",
     "options": ["여기는 안전한 장소니까 대피하세요.", "여기가 위험한 장소니까 조심하세요.", "여기가 조용한 장소니까 떠들지 마세요.", "여기가 횡단보도니까 길을 건너세요."],
     "answer": 2,
-    "image": "https://airnetcso.github.io/eps/image/27.jpg"
+    "image": "https://airnetcso.github.io/topik/image/27-4.jpg"
   },
   {
     "id": 28,
@@ -224,7 +224,7 @@
     "question": "이 사람이 일하는 곳은 어디입니까 ?",
     "options": ["병원입니다.", "약사입니다.", "약국입니다.", "이성군입니다."],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/28.jpg"
+    "image": "https://airnetcso.github.io/topik/image/28-4.jpg"
   },
   {
     "id": 29,
@@ -232,7 +232,7 @@
     "question": "다음 안내문의 설명으로 맞는 것은 무엇입니까 ?",
     "options": ["이 만원짜리 물건을 샀습니다.", "달걀 값과 우유 값이 비슷합니다.", "우유 하나의 상천 원입니다.", "사과와 달걀은 열개씩 샀습니다."],
     "answer": 4,
-    "image": "https://airnetcso.github.io/eps/image/29.jpg"
+    "image": "https://airnetcso.github.io/topik/image/29-4.jpg"
   },
   {
     "id": 30,
@@ -240,7 +240,7 @@
     "question": "다음 그래프에 대한 설명으로 맞는 것을 고르십시오.",
     "options": ["집에서 쉬다라는 응답이 제일 많습니다.", "아르바이트 한다라는 응답과 컴퓨터 배우기라는 응답이 동일합니다.", "직장인들이 주말에 가장 하고 싶어하는 것은 관광입니다.", "친구 만나기라는 응답이 두 번째로 많습니다."],
     "answer": 1,
-    "image": "https://airnetcso.github.io/eps/image/30.jpg"
+    "image": "https://airnetcso.github.io/topik/image/30-4.jpg"
   },
   {
     "id": 31,
@@ -276,7 +276,7 @@
     "question": "다음 그림을 보고 맞는 단어나 문장을 고르십시오.",
     "options": ["낯입니다", "펜치입니다", "전기톱입니다", "연삭기입니다"],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/35.jpg"
+    "image": "https://airnetcso.github.io/topik/image/35-4.jpg"
   },
   {
     "id": 36,
@@ -284,7 +284,7 @@
     "question": "다음 그림을 보고 맞는 단어나 문장을 고르십시오.",
     "options": ["연마 작업을 하고 있습니다.", "도색 작업을 하고 있습니다.", "구멍을 뚫는 작업을 하고 있습니다.", "포장 작업을 하고 있습니다."],
     "answer": 3,
-    "image": "https://airnetcso.github.io/eps/image/36.jpg"
+    "image": "https://airnetcso.github.io/topik/image/36-4.jpg"
   },
   {
     "id": 37,
