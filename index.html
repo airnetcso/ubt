@@ -1,217 +1,334 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login CBT UBT</title>
-<style>
-*{ box-sizing:border-box; font-family:Arial, Helvetica, sans-serif }
-body{ 
-  margin:0; 
-  height:100vh; 
-  display:flex; 
-  justify-content:center; 
-  align-items:center; 
-  background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)), 
-              url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat; 
-}
-/* ANIMASI MASUK HALUS + POLISH */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(50px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.login-box{ 
-  width:340px; /* Tetap seperti asli */
-  background:rgba(255,255,255,.3); 
-  padding:30px 25px; 
-  text-align:center; 
-  backdrop-filter:blur(6px); 
-  border-radius:10px; 
-  box-shadow:0 8px 32px rgba(0,0,0,.2); 
-  animation: fadeSlideUp 0.8s ease-out forwards; /* Lebih smooth */
-  position:relative;
-  overflow:hidden;
-  transition:transform .3s, box-shadow .3s;
-  border:1px solid rgba(30,58,138,.2); /* Gradient border tipis biru tua */
-}
-.login-box::before {
-  content:'';
-  position:absolute;
-  top:-2px; left:-2px; right:-2px; bottom:-2px;
-  background:linear-gradient(45deg, #1e3a8a, #60a5fa);
-  z-index:-1;
-  border-radius:10px;
-  opacity:0;
-  transition:opacity .3s;
-}
-.login-box:hover::before { opacity:0.6; } /* Border glow saat hover */
-.login-box:hover {
-  transform:translateY(-5px);
-  box-shadow:0 15px 40px rgba(0,0,0,.3);
-}
-.login-box h2{ 
-  margin-bottom:20px; 
-  color:#fff; 
-  font-size:24px; 
-  text-shadow:0 2px 6px rgba(0,0,0,.7);
-}
-input, select, button{ 
-  width:100%; 
-  padding:12px; 
-  margin-bottom:12px; 
-  font-size:14px; 
-  border-radius:6px; 
-  border:none; 
-  outline:none; 
-}
-input, select {
-  background:rgba(255,255,255,.18);
-  color:#fff;
-  backdrop-filter:blur(4px);
-  transition:background .3s, box-shadow .3s;
-}
-input::placeholder, select::placeholder {
-  color:rgba(255,255,255,.45); /* Transparan putih */
-  opacity:1;
-  transition:color .3s;
-}
-input:focus::placeholder, select:focus::placeholder {
-  color:rgba(255,255,255,.8); /* Fade-in placeholder saat fokus */
-}
-input:focus, select:focus{ 
-  box-shadow:0 0 0 2px #60a5fa; 
-  background:rgba(255,255,255,.3);
-}
-button{ 
-  background:#1e3a8a; /* Biru tua navy */
-  color:#fff; 
-  cursor:pointer; 
-  font-weight:bold; 
-  transition:background .3s, transform .2s; 
-}
-button:hover{ 
-  background:#172554; /* Lebih gelap */
-  transform:translateY(-2px);
-  animation: pulse 1.5s infinite;
-}
-@keyframes pulse {
-  0%{box-shadow:0 0 0 0 rgba(30,58,138,.7);}
-  70%{box-shadow:0 0 0 10px rgba(30,58,138,0);}
-  100%{box-shadow:0 0 0 0 rgba(30,58,138,0);}
-}
-#error-msg{ 
-  color:#ff6b6b; 
-  font-weight:bold; 
-  margin-top:10px; 
-  font-size:13px; 
-  min-height:20px; 
-}
-.copyright{ 
-  position:fixed; 
-  bottom:12px; 
-  width:100%; 
-  text-align:center; 
-  font-size:12px; 
-  color:rgba(255,255,255,0.85); 
-  letter-spacing:0.5px; 
-}
-.info{ 
-  color:#fff; 
-  font-size:12px; 
-  margin-top:15px; 
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login CBT UBT</title>
+  <style>
+    /* =========================================
+       1. GLOBAL & BACKGROUND STYLES
+       ========================================= */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: url('https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      color: #e0e0e0;
+      height: 100vh;
+      overflow: hidden; 
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6); 
+      z-index: 0;
+    }
+
+    /* =========================================
+       2. LOGIN PAGE STYLES (Dari Latihan Bahasa Korea)
+       ========================================= */
+    #login-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .login-container {
+      width: 95%;
+      max-width: 300px;
+      padding: 35px 25px;
+      text-align: center;
+      background: rgba(40,40,40,0.92);
+      border: 1px solid #666;
+      border-radius: 8px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.7);
+      animation: fadeSlideUp 0.9s ease-out forwards;
+      position: relative;
+      z-index: 3;
+      box-sizing: border-box;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-container h1 {
+      color: #fff;
+      font-size: 26px;
+      margin: 0 0 24px;
+      text-shadow: 0 2px 6px rgba(0,0,0,.7);
+    }
+
+    /* MENAMBAHKAN INFO KECIL SESUAI FILE PREMIUM */
+    .info-kecil {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 8px;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    /* =========================================
+       3. FORM INPUT & BUTTON STYLES
+       ========================================= */
+    input, select {
+      width: 100%;
+      padding: 16px;
+      margin: 12px 0;
+      border: 1px solid #666;
+      border-radius: 6px;
+      background: #1e1e1e;
+      color: #e0e0e0;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    
+    input::placeholder { color: #888; opacity:1; }
+    /* MENGEMBALIKAN WARNA FOKUS KE UNGU/INDIGO SESUAI FILE PREMIUM */
+    input:focus, select:focus { outline: none; border-color: #818cf8; }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%23888888' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    select option {
+      background: #252525;
+      color: #e0e0e0;
+    }
+
+    /* TOMBOL LOGIN DIUBAH KE WARNA BIRU ASLI (BUKAN PINK) */
+    button {
+      width: 100%;
+      padding: 16px;
+      margin: 16px 0 10px;
+      border: none;
+      border-radius: 6px;
+      background: #1e3a8a; /* Biru tua navy */
+      color: #fff;
+      font-weight: bold;
+      font-size: 17px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(30,58,138,.5);
+      transition: all 0.4s;
+    }
+    
+    button:hover {
+      background: #172554; /* Lebih gelap saat dihover */
+      transform: translateY(-5px) scale(1.05);
+    }
+
+    .copyright {
+      margin-top: 35px;
+      color: rgba(255,255,255,.8);
+      font-size: 13px;
+      text-shadow: 0 1px 4px rgba(0,0,0,.8);
+    }
+
+    /* =========================================
+       4. CUSTOM DIALOG MODAL (Pengganti Alert)
+       ========================================= */
+    #custom-dialog {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .dialog-box {
+      background: #252525;
+      border: 1px solid #444;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 320px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      text-align: center;
+      animation: fadeSlideUp 0.3s ease-out forwards;
+    }
+    
+    .dialog-msg {
+      font-size: 15px;
+      color: #eee;
+      line-height: 1.5;
+      margin: 0 0 20px;
+    }
+    
+    .dialog-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .dialog-btn {
+      flex: 1;
+      padding: 12px;
+      box-shadow: none; /* Menyamakan dengan dialog box di file premium */
+    }
+    .dialog-btn:hover {
+      transform: none;
+      opacity: 0.9;
+    }
+    
+    /* Tombol OK di modal menggunakan warna biru yang sama dengan login */
+    .btn-primary { background: #1e3a8a; color: white; margin: 0;}
+    .btn-secondary { background: #444; color: white; margin: 0;}
+
+  </style>
 </head>
 <body>
- <div class="login-box">
-  <h2>LOGIN UBT</h2>
-  <input id="username" placeholder="Username / 이름" autofocus>
-  <input id="password" type="password" placeholder="Password / 비밀번호">
-  <select id="paket">
-   <option value="1">TRYOUT 01</option>
-   <option value="2">TRYOUT 02</option>
-   <option value="3">TRYOUT 03</option>
-  </select>
-  <button onclick="login()">LOGIN / 로그인</button>
-  <div id="error-msg"></div>
- </div>
- <div class="copyright">
-  © 2026 Denzuka - Kim Jongun. All Rights Reserved.
- </div>
 
- <script>
- const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
+  <!-- KOTAK DIALOG MODAL KUSTOM -->
+  <div id="custom-dialog">
+    <div class="dialog-box">
+      <p class="dialog-msg" id="dialogMsg">Pesan kesalahan...</p>
+      <div class="dialog-buttons" id="dialogButtons">
+        <button class="dialog-btn btn-primary" id="btnDialogOk">OK</button>
+      </div>
+    </div>
+  </div>
 
- const users = [
-  {username:"uus",password:"111"},
-  {username:"windi",password:"Windi2000"},
-  {username:"rismaya97",password:"bahasakorea"},
-  {username:"sita77",password:"minyooki"},
-  {username:"Aini185",password:"Doraemon"},
-  {username:"Hangeulfei",password:"studykorea02"},
-  {username:"Hamdan106",password:"Fukuo106"},
-  {username:"Heri",password:"heri99"},
-  {username:"hanarizka",password:"Nungkihana24!"},
-  {username:"Fikrisurya",password:"464646"},
-  {username:"Mutiara2003",password:"Mutiara14"},
-  {username:"dinda",password:"dinda1999"},
-  {username:"wantikas",password:"200022"},
-  {username:"Dininidia",password:"dininidia11"},
-  {username:"kaniarostayuni9",password:"Kania1313"},
-  {username:"Dikisetiawan07",password:"Diki2709"},
-  {username:"Aisyah18",password:"Aisyah18."},
-  {username:"Rizka2026",password:"butterfly24"},
-  {username:"Zhafif07",password:"20060722"},
-  {username:"siwon",password:"kampus2"},
-  {username:"Satria11",password:"Satria113"},
-  {username:"sultan2026",password:"sultandaulah"},
-  {username:"yppsdi",password:"global2026"},
-  {username:"Azizah27_",password:"Azzh271"},
-  {username:"mila",password:"lestari"}
- ];
+  <!-- LOGIN PAGE UTAMA -->
+  <div id="login-page">
+    <div class="login-container">
+      
+      <h1>LOGIN UBT</h1>
+      
+      <!-- MENAMBAHKAN ELEMEN INFO KECIL -->
+      <div class="info-kecil">
+        문항수 : 25문항 | 시간 : 50분
+      </div>
 
- function checkStorage(){
-  try{ localStorage.setItem("test","ok"); localStorage.removeItem("test"); return true; }catch(e){ return false; }
- }
+      <!-- Password dihapus, hanya Username -->
+      <input id="username" type="text" placeholder="Username / 이름" autocomplete="off" autofocus>
+      
+      <!-- Dropdown Paket Tryout dari index aslimu -->
+      <select id="paket">
+        <option value="" disabled selected>-- Pilih Paket --</option>
+        <option value="1">TRYOUT 01</option>
+        <option value="2">TRYOUT 02</option>
+        <option value="3">TRYOUT 03</option>
+      </select>
+      
+      <button id="btnLogin">LOGIN / 로그인</button>
+    </div>
+    
+    <div class="copyright">© 2026 Denzuka - Kim Jongun. All Rights Reserved.</div>
+  </div>
 
- function login(){
-  const err = document.getElementById("error-msg");
-  err.innerText = "";
-  if(!checkStorage()){ err.innerText = "Browser memblokir localStorage. Gunakan mode normal."; return; }
-  
-  const u = document.getElementById("username").value.trim();
-  const p = document.getElementById("password").value.trim();
-  const paket = document.getElementById("paket").value;
-  
-  if (!u || !p) { err.innerText = "Username & password wajib diisi!"; return; }
+  <script>
+    // Data user dari file index(3) aslimu (tanpa field password)
+    const users = [
+      {username:"uus"}, {username:"windi"}, {username:"rismaya97"},
+      {username:"sita77"}, {username:"Aini185"}, {username:"Hangeulfei"},
+      {username:"Hamdan106"}, {username:"Heri"}, {username:"hanarizka"},
+      {username:"Fikrisurya"}, {username:"Mutiara2003"}, {username:"dinda"},
+      {username:"wantikas"}, {username:"Dininidia"}, {username:"kaniarostayuni9"},
+      {username:"Dikisetiawan07"}, {username:"Aisyah18"}, {username:"Rizka2026"},
+      {username:"Zhafif07"}, {username:"siwon"}, {username:"Satria11"},
+      {username:"sultan2026"}, {username:"yppsdi"}, {username:"Azizah27_"},
+      {username:"mila"},
+      {username:"admin", role:"admin"} // Tambahan contoh admin
+    ];
 
-  const user = users.find(x => x.username === u && x.password === p);
-  if(!user){ err.innerText = "Username atau password salah!"; return; }
-  
-  if(Number(paket) > 1){
-   const results = JSON.parse(localStorage.getItem("results") || "[]");
-   const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket) - 1);
-   if(!prev || Number(prev.score) < 80){ 
-    err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; 
-    return; 
-   }
-  }
-  
-  localStorage.setItem("login","true");
-  localStorage.setItem("user",u);
-  localStorage.setItem("paket",paket);
-  
-  if(user.role === "admin") {
-   location.href = "https://airnetcso.github.io/admin/";
-  } else {
-   location.href = "dashboard.html";
-  }
- }
+    // Fungsi Custom Alert
+    function showCustomAlert(message, onOk = null) {
+      const dialog = document.getElementById("custom-dialog");
+      const msgEl = document.getElementById("dialogMsg");
+      const btnOk = document.getElementById("btnDialogOk");
 
- // Enter untuk login
- document.addEventListener("keypress", function(e) {
-  if (e.key === "Enter") login();
- });
- </script>
+      msgEl.innerText = message;
+      btnOk.onclick = () => {
+        dialog.style.display = "none";
+        if (onOk) onOk();
+      };
+      
+      dialog.style.display = "flex";
+    }
+
+    function checkStorage(){
+      try{ localStorage.setItem("test","ok"); localStorage.removeItem("test"); return true; }catch(e){ return false; }
+    }
+
+    function login(){
+      if(!checkStorage()){ 
+        showCustomAlert("Browser memblokir localStorage. Gunakan mode normal."); 
+        return; 
+      }
+      
+      const u = document.getElementById("username").value.trim();
+      const paket = document.getElementById("paket").value;
+      
+      if (!u) { 
+        showCustomAlert("Username wajib diisi!"); 
+        return; 
+      }
+      if (!paket) {
+        showCustomAlert("Pilih paket Tryout terlebih dahulu!"); 
+        return; 
+      }
+
+      const user = users.find(x => x.username === u);
+      if(!user){ 
+        showCustomAlert("Username tidak terdaftar!"); 
+        return; 
+      }
+      
+      // Validasi Paket
+      if(Number(paket) > 1){
+        const results = JSON.parse(localStorage.getItem("results") || "[]");
+        const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket) - 1);
+        if(!prev || Number(prev.score) < 80){ 
+          showCustomAlert("Harus lulus paket sebelumnya dengan nilai minimal 80"); 
+          return; 
+        }
+      }
+      
+      // Login sukses
+      localStorage.setItem("login","true");
+      localStorage.setItem("user",u);
+      localStorage.setItem("paket",paket);
+      
+      if(user.role === "admin") {
+        location.href = "https://airnetcso.github.io/admin/";
+      } else {
+        location.href = "dashboard.html";
+      }
+    }
+
+    // Event Listener Tombol Login
+    document.getElementById("btnLogin").onclick = login;
+
+    // Enter untuk login
+    document.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        // Cek jika modal sedang terbuka, jangan eksekusi login
+        if(document.getElementById("custom-dialog").style.display !== "flex") {
+           login();
+        } else {
+           // Jika modal terbuka dan tekan enter, tutup modal
+           document.getElementById("btnDialogOk").click();
+        }
+      }
+    });
+  </script>
 </body>
 </html>
